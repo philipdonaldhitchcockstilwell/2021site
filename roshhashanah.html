@@ -36,6 +36,31 @@
     .upgrade-cost {
       font-size: 0.8em;
     }
+      /* Existing styles */
+
+  button {
+    margin: 5px;
+    padding: 14px 28px; /* Increased padding for larger touch area */
+    font-size: 16px;     /* Larger font size for better readability */
+    border: none;
+    border-radius: 8px;  /* Rounded corners for aesthetics */
+    background-color: #4CAF50; /* Example background color */
+    color: white;        /* Text color */
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none; /* Disable text selection on iOS */
+    -webkit-touch-callout: none; /* Disable touch callout (e.g., long-press menu) on iOS */
+    touch-action: manipulation; /* Hint to browsers to handle touch interactions */
+  }
+
+  button:active {
+    background-color: #45a049; /* Darker shade on press */
+  }
+
+  /* Specific styles for the Reset Button */
+  #resetButton {
+    background-color: #ff4d4d; /* Distinct color for reset action */
+  }
   </style>
 </head>
 <body>
@@ -46,7 +71,7 @@
 
   <!-- Marquee for Early Internet Charm -->
   <marquee behavior="alternate" scrollamount="3" style="color: #DAA520; font-size: 1.2em; margin-bottom: 20px;">
-    🍎🍯 Shanah Tovah! You're Invited to Celebrate Rosh Hashanah! 🍯🍎
+    🍎🍯 Shana Tovah! You're Invited to Celebrate Rosh Hashanah! 🍯🍎
   </marquee>
 
   <!-- Invitation Details -->
