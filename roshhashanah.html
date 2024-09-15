@@ -180,7 +180,7 @@
   </div>
 
   <!-- Inline JavaScript for the Idle Game -->
-  <script type="text/javascript" version="1.0.1">
+  <script type="text/javascript" version="1.0.2">
   (function() {
       var scripts = document.getElementsByTagName('script');
       var currentScript = scripts[scripts.length - 1];
@@ -592,9 +592,9 @@
         honeyGeneration *= honeyProductionMultiplier * productionMultiplier;
         honeyCount += honeyGeneration;
 
-        console.log("Honey generation per tick: " + honeyGeneration.toFixed(4) + 
-                    ", Total honey (including fractional): " + honeyCount.toFixed(4) + 
-                    ", Displayed honeyCount: " + Math.floor(honeyCount));
+        // console.log("Honey generation per tick: " + honeyGeneration.toFixed(4) + 
+        //             ", Total honey (including fractional): " + honeyCount.toFixed(4) + 
+        //             ", Displayed honeyCount: " + Math.floor(honeyCount));
 
         // Pomegranate generation
         var pomegranateGeneration = (pomegranateTreeCount * 0.2);
@@ -622,6 +622,9 @@
 
     // Function to buy upgrades
     function buyUpgrade(upgrade) {
+      console.log(`Attempting to buy upgrade: ${upgrade}`);
+      console.log(`Current resources - Apples: ${appleCount}, Honey: ${honeyCount}, Pomegranates: ${pomegranateCount}`);
+      console.log('Apple Tree Cost: ' + treeCost);
       switch(upgrade) {
         // Apple Upgrades
         case 'tree':
@@ -1708,130 +1711,130 @@
         const gameState = JSON.parse(savedState);
         
         // Resource Counts
-        appleCount = gameState.appleCount;
-        honeyCount = gameState.honeyCount;
-        pomegranateCount = gameState.pomegranateCount;
+        appleCount = gameState.appleCount || 0;
+        honeyCount = gameState.honeyCount || 0;
+        pomegranateCount = gameState.pomegranateCount || 0;
         shofarCount = gameState.shofarCount;
 
         // Upgrade Counts
-        treeCount = gameState.treeCount;
-        beehiveCount = gameState.beehiveCount;
-        pomegranateTreeCount = gameState.pomegranateTreeCount;
-        celebrationCount = gameState.celebrationCount;
-        honeyedApplesCount = gameState.honeyedApplesCount;
-        goldenBeeCount = gameState.goldenBeeCount;
-        megaChallahCount = gameState.megaChallahCount;
+        treeCount = gameState.treeCount || 0;
+        beehiveCount = gameState.beehiveCount || 0;
+        pomegranateTreeCount = gameState.pomegranateTreeCount || 0;
+        celebrationCount = gameState.celebrationCount || 0  ;
+        honeyedApplesCount = gameState.honeyedApplesCount || 0;
+        goldenBeeCount = gameState.goldenBeeCount || 0;
+        megaChallahCount = gameState.megaChallahCount || 0;
 
         // Apple Upgrades
-        orchardCount = gameState.orchardCount;
-        appleFactoryCount = gameState.appleFactoryCount;
-        appleSupplyChainCount = gameState.appleSupplyChainCount;
-        appleEmpireCount = gameState.appleEmpireCount;
-        appleMultiverseCount = gameState.appleMultiverseCount;
-        appleSingularityCount = gameState.appleSingularityCount;
-        quantumAppleFacilityCount = gameState.quantumAppleFacilityCount;
-        appleParadoxGeneratorCount = gameState.appleParadoxGeneratorCount;
-        interdimensionalAppleHypercubeCount = gameState.interdimensionalAppleHypercubeCount;
-        cosmicAppleConsciousnessCount = gameState.cosmicAppleConsciousnessCount;
-        transcendentAppleOmniverseCount = gameState.transcendentAppleOmniverseCount;
+        orchardCount = gameState.orchardCount || 0;
+        appleFactoryCount = gameState.appleFactoryCount || 0;
+        appleSupplyChainCount = gameState.appleSupplyChainCount || 0;
+        appleEmpireCount = gameState.appleEmpireCount || 0;
+        appleMultiverseCount = gameState.appleMultiverseCount || 0;
+        appleSingularityCount = gameState.appleSingularityCount || 0;
+        quantumAppleFacilityCount = gameState.quantumAppleFacilityCount || 0;
+        appleParadoxGeneratorCount = gameState.appleParadoxGeneratorCount || 0;
+        interdimensionalAppleHypercubeCount = gameState.interdimensionalAppleHypercubeCount || 0;
+        cosmicAppleConsciousnessCount = gameState.cosmicAppleConsciousnessCount || 0;
+        transcendentAppleOmniverseCount = gameState.transcendentAppleOmniverseCount || 0;
 
         // Honey Upgrades
-        honeyFarmCount = gameState.honeyFarmCount;
-        honeyProcessingPlantCount = gameState.honeyProcessingPlantCount;
-        honeyCorporationCount = gameState.honeyCorporationCount;
-        honeyGalaxyCount = gameState.honeyGalaxyCount;
-        honeyBlackHoleCount = gameState.honeyBlackHoleCount;
-        honeycombCollectorCount = gameState.honeycombCollectorCount;
-        quantumHoneyReactorCount = gameState.quantumHoneyReactorCount;
-        honeyTimeDilatorCount = gameState.honeyTimeDilatorCount;
-        honeyverseCreatorCount = gameState.honeyverseCreatorCount;
-        honeySingularityMatrixCount = gameState.honeySingularityMatrixCount;
-        infiniteHoneyContinuumCount = gameState.infiniteHoneyContinuumCount;
+        honeyFarmCount = gameState.honeyFarmCount || 0;
+        honeyProcessingPlantCount = gameState.honeyProcessingPlantCount || 0;
+        honeyCorporationCount = gameState.honeyCorporationCount || 0;
+        honeyGalaxyCount = gameState.honeyGalaxyCount || 0;
+        honeyBlackHoleCount = gameState.honeyBlackHoleCount || 0;
+        honeycombCollectorCount = gameState.honeycombCollectorCount || 0;
+        quantumHoneyReactorCount = gameState.quantumHoneyReactorCount || 0;
+        honeyTimeDilatorCount = gameState.honeyTimeDilatorCount || 0;
+        honeyverseCreatorCount = gameState.honeyverseCreatorCount || 0;
+        honeySingularityMatrixCount = gameState.honeySingularityMatrixCount || 0;
+        infiniteHoneyContinuumCount = gameState.infiniteHoneyContinuumCount || 0;
 
         // Pomegranate Upgrades
-        pomegranateGroveCount = gameState.pomegranateGroveCount;
-        pomegranateDimensionExpanderCount = gameState.pomegranateDimensionExpanderCount;
-        quantumPomegranateColliderCount = gameState.quantumPomegranateColliderCount;
-        pomegranateRealityDistorterCount = gameState.pomegranateRealityDistorterCount;
-        pomegranateMultiverseWeaverCount = gameState.pomegranateMultiverseWeaverCount;
+        pomegranateGroveCount = gameState.pomegranateGroveCount || 0;
+        pomegranateDimensionExpanderCount = gameState.pomegranateDimensionExpanderCount || 0;
+        quantumPomegranateColliderCount = gameState.quantumPomegranateColliderCount || 0;
+        pomegranateRealityDistorterCount = gameState.pomegranateRealityDistorterCount || 0;
+        pomegranateMultiverseWeaverCount = gameState.pomegranateMultiverseWeaverCount || 0;
 
         // Production Multipliers
-        productionMultiplier = gameState.productionMultiplier;
-        appleProductionMultiplier = gameState.appleProductionMultiplier;
-        honeyProductionMultiplier = gameState.honeyProductionMultiplier;
-        pomegranateProductionMultiplier = gameState.pomegranateProductionMultiplier;
+        productionMultiplier = gameState.productionMultiplier || 1;
+        appleProductionMultiplier = gameState.appleProductionMultiplier || 1;
+        honeyProductionMultiplier = gameState.honeyProductionMultiplier || 1;
+        pomegranateProductionMultiplier = gameState.pomegranateProductionMultiplier || 1;
 
         // Achievements
         achievements = gameState.achievements || [];
 
         // Celebration Counts
-        grandCelebrationCount = gameState.grandCelebrationCount;
-        epicCelebrationCount = gameState.epicCelebrationCount;
-        cosmicCelebrationCount = gameState.cosmicCelebrationCount;
-        intergalacticCelebrationCount = gameState.intergalacticCelebrationCount;
-        temporalCelebrationCount = gameState.temporalCelebrationCount;
-        celebrationSingularityCount = gameState.celebrationSingularityCount;
-        infiniteCelebrationParadoxCount = gameState.infiniteCelebrationParadoxCount;
-        omniversalCelebrationCount = gameState.omniversalCelebrationCount;
-        oneCelebrationCount = gameState.oneCelebrationCount;
+        grandCelebrationCount = gameState.grandCelebrationCount || 0;
+        epicCelebrationCount = gameState.epicCelebrationCount || 0;
+        cosmicCelebrationCount = gameState.cosmicCelebrationCount || 0;
+        intergalacticCelebrationCount = gameState.intergalacticCelebrationCount || 0;
+        temporalCelebrationCount = gameState.temporalCelebrationCount || 0;
+        celebrationSingularityCount = gameState.celebrationSingularityCount || 0;
+        infiniteCelebrationParadoxCount = gameState.infiniteCelebrationParadoxCount || 0;
+        omniversalCelebrationCount = gameState.omniversalCelebrationCount || 0;
+        oneCelebrationCount = gameState.oneCelebrationCount || 0;
 
         // Current Costs
-        treeCost = gameState.treeCost;
-        orchardCost = gameState.orchardCost;
-        orchardHoneyCost = gameState.orchardHoneyCost;
-        appleFactoryCost = gameState.appleFactoryCost;
-        appleFactoryHoneyCost = gameState.appleFactoryHoneyCost;
-        appleSupplyChainCost = gameState.appleSupplyChainCost;
-        appleSupplyChainHoneyCost = gameState.appleSupplyChainHoneyCost;
-        appleEmpireCost = gameState.appleEmpireCost;
-        appleEmpireHoneyCost = gameState.appleEmpireHoneyCost;
-        appleMultiverseCost = gameState.appleMultiverseCost;
-        appleMultiverseHoneyCost = gameState.appleMultiverseHoneyCost;
-        appleSingularityCost = gameState.appleSingularityCost;
-        appleSingularityHoneyCost = gameState.appleSingularityHoneyCost;
-        quantumAppleFacilityCost = gameState.quantumAppleFacilityCost;
-        quantumAppleFacilityHoneyCost = gameState.quantumAppleFacilityHoneyCost;
-        beehiveCost = gameState.beehiveCost;
-        honeyFarmCost = gameState.honeyFarmCost;
-        honeyFarmAppleCost = gameState.honeyFarmAppleCost;
-        honeyProcessingPlantCost = gameState.honeyProcessingPlantCost;
-        honeyProcessingPlantAppleCost = gameState.honeyProcessingPlantAppleCost;
-        honeyCorporationCost = gameState.honeyCorporationCost;
-        honeyCorporationAppleCost = gameState.honeyCorporationAppleCost;
-        honeycombCollectorCost = gameState.honeycombCollectorCost;
-        honeycombCollectorAppleCost = gameState.honeycombCollectorAppleCost;
-        quantumHoneyReactorCost = gameState.quantumHoneyReactorCost;
-        quantumHoneyReactorAppleCost = gameState.quantumHoneyReactorAppleCost;
-        honeyGalaxyCost = gameState.honeyGalaxyCost;
-        honeyGalaxyAppleCost = gameState.honeyGalaxyAppleCost;
-        honeyTimeDilatorCost = gameState.honeyTimeDilatorCost;
-        honeyTimeDilatorAppleCost = gameState.honeyTimeDilatorAppleCost;
-        honeyBlackHoleCost = gameState.honeyBlackHoleCost;
-        honeyBlackHoleAppleCost = gameState.honeyBlackHoleAppleCost;
-        honeyverseCreatorCost = gameState.honeyverseCreatorCost;
-        honeyverseCreatorAppleCost = gameState.honeyverseCreatorAppleCost;
-        honeySingularityMatrixCost = gameState.honeySingularityMatrixCost;
-        honeySingularityMatrixAppleCost = gameState.honeySingularityMatrixAppleCost;
-        infiniteHoneyContinuumCost = gameState.infiniteHoneyContinuumCost;
-        infiniteHoneyContinuumAppleCost = gameState.infiniteHoneyContinuumAppleCost;
-        pomegranateTreeCost = gameState.pomegranateTreeCost;
-        pomegranateGroveCost = gameState.pomegranateGroveCost;
-        pomegranateGroveHoneyCost = gameState.pomegranateGroveHoneyCost;
-        pomegranateDimensionExpanderCost = gameState.pomegranateDimensionExpanderCost;
-        pomegranateDimensionExpanderHoneyCost = gameState.pomegranateDimensionExpanderHoneyCost;
-        quantumPomegranateColliderCost = gameState.quantumPomegranateColliderCost;
-        quantumPomegranateColliderHoneyCost = gameState.quantumPomegranateColliderHoneyCost;
-        pomegranateRealityDistorterCost = gameState.pomegranateRealityDistorterCost;
-        pomegranateRealityDistorterHoneyCost = gameState.pomegranateRealityDistorterHoneyCost;
-        pomegranateMultiverseWeaverCost = gameState.pomegranateMultiverseWeaverCost;
-        pomegranateMultiverseWeaverHoneyCost = gameState.pomegranateMultiverseWeaverHoneyCost;
-        honeyedApplesCost = gameState.honeyedApplesCost;
-        honeyedApplesHoneyCost = gameState.honeyedApplesHoneyCost;
-        goldenBeeHoneyCost = gameState.goldenBeeHoneyCost;
-        goldenBeePomegranateCost = gameState.goldenBeePomegranateCost;
-        megaChallahHoneyCost = gameState.megaChallahHoneyCost;
-        megaChallahPomegranateCost = gameState.megaChallahPomegranateCost;
-        shofarCost = gameState.shofarCost;
+        treeCost = gameState.treeCost || 25;
+        orchardCost = gameState.orchardCost || 500;
+        orchardHoneyCost = gameState.orchardHoneyCost || 50;
+        appleFactoryCost = gameState.appleFactoryCost || 2000;
+        appleFactoryHoneyCost = gameState.appleFactoryHoneyCost || 200;
+        appleSupplyChainCost = gameState.appleSupplyChainCost || 5000;
+        appleSupplyChainHoneyCost = gameState.appleSupplyChainHoneyCost || 500;
+        appleEmpireCost = gameState.appleEmpireCost || 10000;
+        appleEmpireHoneyCost = gameState.appleEmpireHoneyCost || 1000;
+        appleMultiverseCost = gameState.appleMultiverseCost || 50000;
+        appleMultiverseHoneyCost = gameState.appleMultiverseHoneyCost || 5000;
+        appleSingularityCost = gameState.appleSingularityCost || 100000;
+        appleSingularityHoneyCost = gameState.appleSingularityHoneyCost || 10000;
+        quantumAppleFacilityCost = gameState.quantumAppleFacilityCost || 500000;
+        quantumAppleFacilityHoneyCost = gameState.quantumAppleFacilityHoneyCost || 50000;
+        beehiveCost = gameState.beehiveCost || 50;
+        honeyFarmCost = gameState.honeyFarmCost || 250;
+        honeyFarmAppleCost = gameState.honeyFarmAppleCost || 200;
+        honeyProcessingPlantCost = gameState.honeyProcessingPlantCost || 2000;
+        honeyProcessingPlantAppleCost = gameState.honeyProcessingPlantAppleCost || 800;
+        honeyCorporationCost = gameState.honeyCorporationCost || 5000;
+        honeyCorporationAppleCost = gameState.honeyCorporationAppleCost || 2000;
+        honeycombCollectorCost = gameState.honeycombCollectorCost || 20000;
+        honeycombCollectorAppleCost = gameState.honeycombCollectorAppleCost || 8000;
+        quantumHoneyReactorCost = gameState.quantumHoneyReactorCost || 100000;
+        quantumHoneyReactorAppleCost = gameState.quantumHoneyReactorAppleCost || 40000;
+        honeyGalaxyCost = gameState.honeyGalaxyCost || 500000;
+        honeyGalaxyAppleCost = gameState.honeyGalaxyAppleCost || 200000;
+        honeyTimeDilatorCost = gameState.honeyTimeDilatorCost || 1000000;
+        honeyTimeDilatorAppleCost = gameState.honeyTimeDilatorAppleCost || 400000;
+        honeyBlackHoleCost = gameState.honeyBlackHoleCost || 5000000;
+        honeyBlackHoleAppleCost = gameState.honeyBlackHoleAppleCost || 2000000;
+        honeyverseCreatorCost = gameState.honeyverseCreatorCost || 10000000;
+        honeyverseCreatorAppleCost = gameState.honeyverseCreatorAppleCost || 4000000;
+        honeySingularityMatrixCost = gameState.honeySingularityMatrixCost || 50000000;
+        honeySingularityMatrixAppleCost = gameState.honeySingularityMatrixAppleCost || 20000000;
+        infiniteHoneyContinuumCost = gameState.infiniteHoneyContinuumCost || 100000000;
+        infiniteHoneyContinuumAppleCost = gameState.infiniteHoneyContinuumAppleCost || 40000000;
+        pomegranateTreeCost = gameState.pomegranateTreeCost || 75;
+        pomegranateGroveCost = gameState.pomegranateGroveCost || 500;
+        pomegranateGroveHoneyCost = gameState.pomegranateGroveHoneyCost || 50;
+        pomegranateDimensionExpanderCost = gameState.pomegranateDimensionExpanderCost || 2000;
+        pomegranateDimensionExpanderHoneyCost = gameState.pomegranateDimensionExpanderHoneyCost || 200;
+        quantumPomegranateColliderCost = gameState.quantumPomegranateColliderCost || 5000;
+        quantumPomegranateColliderHoneyCost = gameState.quantumPomegranateColliderHoneyCost || 500;
+        pomegranateRealityDistorterCost = gameState.pomegranateRealityDistorterCost || 10000;
+        pomegranateRealityDistorterHoneyCost = gameState.pomegranateRealityDistorterHoneyCost || 1000;
+        pomegranateMultiverseWeaverCost = gameState.pomegranateMultiverseWeaverCost || 50000;
+        pomegranateMultiverseWeaverHoneyCost = gameState.pomegranateMultiverseWeaverHoneyCost || 5000;
+        honeyedApplesCost = gameState.honeyedApplesCost || 100;
+        honeyedApplesHoneyCost = gameState.honeyedApplesHoneyCost || 25;
+        goldenBeeHoneyCost = gameState.goldenBeeHoneyCost || 200;
+        goldenBeePomegranateCost = gameState.goldenBeePomegranateCost || 50;
+        megaChallahHoneyCost = gameState.megaChallahHoneyCost || 1500;
+        megaChallahPomegranateCost = gameState.megaChallahPomegranateCost || 50;
+        shofarCost = gameState.shofarCost || 25;
 
         // Unlock upgrades based on loaded counts
         // Apple Upgrades
