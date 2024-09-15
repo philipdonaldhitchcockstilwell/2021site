@@ -180,7 +180,18 @@
   </div>
 
   <!-- Inline JavaScript for the Idle Game -->
-  <script type="text/javascript">
+  <script type="text/javascript" version="1.0.1">
+  (function() {
+      var scripts = document.getElementsByTagName('script');
+      var currentScript = scripts[scripts.length - 1];
+      var currentVersion = currentScript.getAttribute('version');
+      var storedVersion = localStorage.getItem('gameVersion');
+
+      if (storedVersion !== currentVersion) {
+          localStorage.setItem('gameVersion', currentVersion);
+          location.reload(true);
+      }
+  })();
     // Resource Variables
     var appleCount = 0;
     var honeyCount = 0;
