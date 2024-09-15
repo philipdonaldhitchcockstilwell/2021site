@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>5785 Party</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Add your CSS styles here */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fff8dc;
+      text-align: center;
+    }
+    /* Additional styling for game elements */
+    #notification-area {
+      margin: 10px auto;
+      width: 90%;
+      max-width: 800px;
+      color: #8B0000;
+      font-weight: bold;
+      min-height: 20px;
+    }
+    .upgrade-item {
+      flex: 1;
+      min-width: 200px;
+      border: 1px solid #DAA520;
+      padding: 5px;
+    }
+    .upgrade-item button {
+      margin: 5px;
+    }
+    .upgrade-item div {
+      font-size: 0.9em;
+    }
+    .upgrade-cost {
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <h1 style="color: #8B0000; margin-top: 20px;">Lauren's Year 5785 Rosh Hashanah Potluck Invite Page</h1>
+  <hr width="50%" style="border-color: #8B0000;">
+
+  <!-- Marquee for Early Internet Charm -->
+  <marquee behavior="alternate" scrollamount="3" style="color: #DAA520; font-size: 1.2em; margin-bottom: 20px;">
+    🍎🍯 Shanah Tovah! You're Invited to Celebrate Rosh Hashanah! 🍯🍎
+  </marquee>
+
+  <!-- Invitation Details -->
+  <div style="margin: 20px auto; width: 80%; max-width: 600px;">
+    <h2 style="color: #DAA520;">You're Invited!</h2>
+    <p><span id="date">October 2nd, 2024</span></p>
+    <p><span id="time">7:30PM</span></p>
+    <p><b>Location:</b> <span id="location">Our house</span></p>
+    <p id="details">This is a potluck, so please bring a dish to share if you'd like to. Lauren will be making the brisket.</p>
+    <p><a href="[Insert Partiful Link Here]" id="partiful-link"><b>Please RSVP here so we can get a headcount</b></a></p>    
+  </div>
+
+  <hr width="50%" style="border-color: #8B0000;">
+
+  <!-- Idle Game Section -->
+  <div style="margin: 20px auto; width: 90%; max-width: 800px;">
+    <h2 style="color: #DAA520;">Rosh Hashanah Simulator</h2>
+    <p>Collect apples, honey, and pomegranates to host bigger and better Rosh Hashanah celebrations.</p>
+    <div id="game-area" style="position: relative; width: 100%; height: 300px; background-image: url('images/gamebg.png'); background-size: cover; overflow: hidden; border: 2px solid #DAA520; margin: 0 auto;">
+      <!-- Game elements will appear here -->
+    </div>
+    <div style="margin: 20px auto; width: 90%; max-width: 800px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+      <span>🍎 Apples: <span id="apples">0</span></span>
+      <span>🍯 Honey: <span id="honey">0</span></span>
+      <span>🍇 Pomegranates: <span id="pomegranates">0</span></span>
+    </div>
+
+    <!-- Notification Area -->
+    <div id="notification-area"></div>
+
+    <!-- Actions and Upgrades -->
+    <div style="margin-top: 20px;">
+      <h3>Actions:</h3>
+      <button onclick="collectApples()" style="margin: 5px;">Shake Tree (Get Apples)</button>
+      <button onclick="blowShofar()" style="margin: 5px;">Blow Shofar (Cost: <span id="shofarCostDisplay">25</span> Honey)</button>
+      <div id="shofarCooldown" style="font-size: 0.9em; color: red;"></div>
+      <div style="font-size: 0.9em; margin-top: 5px;">Shofar Effect: Doubles all production rates for 30 seconds!</div>
+    </div>
+    <div style="margin-top: 20px;">
+      <h3>Upgrades:</h3>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+        <!-- Apple Upgrades -->
+        <div class="upgrade-item" id="appleUpgrades">
+          <!-- Apple Tree Upgrade -->
+          <button onclick="buyUpgrade('tree')">Plant Apple Tree 🌳</button>
+          <div>Grows apples over time.</div>
+          <div class="upgrade-cost">Cost: <span id="treeCost">25</span> Apples</div>
+        </div>
+        <!-- Honey Upgrades -->
+        <div class="upgrade-item" id="honeyUpgrades">
+          <!-- Beehive Upgrade -->
+          <button onclick="buyUpgrade('beehive')">Build Beehive 🐝</button>
+          <div>Produces honey from apples.</div>
+          <div class="upgrade-cost">Cost: <span id="beehiveCost">50</span> Apples</div>
+        </div>
+        <!-- Pomegranate Upgrades -->
+        <div class="upgrade-item" id="pomegranateUpgrades">
+          <!-- Pomegranate Tree Upgrade -->
+          <button onclick="buyUpgrade('pomegranateTree')">Plant Pomegranate Tree 🍇</button>
+          <div>Grows pomegranates over time.</div>
+          <div class="upgrade-cost">Cost: <span id="pomegranateTreeCost">75</span> Honey</div>
+        </div>
+        <!-- Celebration Upgrades -->
+        <div class="upgrade-item" id="megaChallahUpgrade">
+            <button onclick="buyUpgrade('megaChallah')">Bake Mega Challah 🍞✨</button>
+            <div>Greatly boosts all production rates.</div>
+            <div class="upgrade-cost">
+              Cost: <span id="megaChallahHoneyCost">1500</span> Honey,
+              <span id="megaChallahPomegranateCost">50</span> Pomegranates
+            </div>
+        </div>
+        <!-- Honeyed Apples Upgrade -->
+        <div class="upgrade-item" id="honeyedApplesUpgrade">
+          <button onclick="buyUpgrade('honeyedApples')">Buy Honeyed Apples 🍯🍎</button>
+          <div>Increases the value of each apple collected by 10% per upgrade.</div>
+          <div class="upgrade-cost">
+            Cost: <span id="honeyedApplesCost">100</span> Apples,
+            <span id="honeyedApplesHoneyCost">25</span> Honey
+          </div>
+        </div>
+        <!-- Golden Bee Upgrade -->
+        <div class="upgrade-item" id="goldenBeeUpgrade">
+          <button onclick="buyUpgrade('goldenBee')">Summon Golden Bee 🐝✨</button>
+          <div>Boosts honey production significantly.</div>
+          <div class="upgrade-cost">
+            Cost: <span id="goldenBeeHoneyCost">200</span> Honey,
+            <span id="goldenBeePomegranateCost">50</span> Pomegranates
+          </div>
+        </div>
+        <div class="upgrade-item" id="celebrationUpgrades">
+            <!-- Rosh Hashanah Celebration -->
+            <button onclick="celebrate()">Celebrate Rosh Hashanah! 🎉</button>
+            <div>Boosts all production significantly.</div>
+            <div class="upgrade-cost">Cost: 1000 Apples, 500 Honey, 100 Pomegranates</div>
+        </div>
+        <!-- Mega Challah Upgrade -->
+      </div>
+    </div>
+    <div style="margin-top: 20px;">
+      <h3>Achievements:</h3>
+      <p id="achievements">None yet.</p>
+    </div>
+      <button onclick="resetGame()" style="margin-top: 10px; padding: 10px 20px; background-color: #ff4d4d; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Reset Game 🔄
+    </button>
+  </div>
+
+  <!-- Inline JavaScript for the Idle Game -->
+  <script type="text/javascript">
+    // Resource Variables
+    var appleCount = 0;
+    var honeyCount = 0;
+    var pomegranateCount = 0;
+    var shofarCount = 0;
+
+    // Upgrade Counts
+    var treeCount = 0;
+    var beehiveCount = 0;
+    var pomegranateTreeCount = 0;
+    var honeyedApplesCount = 0;
+    var goldenBeeCount = 0;
+    var megaChallahCount = 0;
+
+    //Celebration Counts
+    var celebrationCount = 0;
+    var grandCelebrationCount = 0;
+    var epicCelebrationCount = 0;
+    var cosmicCelebrationCount = 0;
+    var intergalacticCelebrationCount = 0;
+    var temporalCelebrationCount = 0;
+    var celebrationSingularityCount = 0;
+    var infiniteCelebrationParadoxCount = 0;
+    var omniversalCelebrationCount = 0;
+    var oneCelebrationCount = 0;
+
+    // Apple Upgrades
+    var orchardCount = 0;
+    var appleFactoryCount = 0;
+    var appleSupplyChainCount = 0;
+    var appleEmpireCount = 0;
+    var appleMultiverseCount = 0;
+    var appleSingularityCount = 0;
+    var quantumAppleFacilityCount = 0;
+    var appleParadoxGeneratorCount = 0;
+    var interdimensionalAppleHypercubeCount = 0;
+    var cosmicAppleConsciousnessCount = 0;
+    var transcendentAppleOmniverseCount = 0;
+
+    // Honey Upgrades
+    var honeyFarmCount = 0;
+    var honeyProcessingPlantCount = 0;
+    var honeyCorporationCount = 0;
+    var honeyGalaxyCount = 0;
+    var honeyBlackHoleCount = 0;
+    var honeycombCollectorCount = 0;
+    var quantumHoneyReactorCount = 0;
+    var honeyTimeDilatorCount = 0;
+    var honeyverseCreatorCount = 0;
+    var honeySingularityMatrixCount = 0;
+    var infiniteHoneyContinuumCount = 0;
+
+    // Pomegranate Upgrades
+    var pomegranateGroveCount = 0;
+    var pomegranateDimensionExpanderCount = 0;
+    var quantumPomegranateColliderCount = 0;
+    var pomegranateRealityDistorterCount = 0;
+    var pomegranateMultiverseWeaverCount = 0;
+
+// Other Upgrade Counts (if any)
+// Add declarations for any other upgrade counts used in your code
+
+
+    // Celebration Costs
+    var celebrationCost = {
+      appleCount: 1000,
+      honeyCount: 500,
+      pomegranateCount: 100
+    };
+    var grandCelebrationCost = {
+      appleCount: 5000,
+      honeyCount: 2000,
+      pomegranateCount: 500
+    };
+    var epicCelebrationCost = {
+      appleCount: 10000,
+      honeyCount: 5000,
+      pomegranateCount: 1000
+    };
+    var cosmicCelebrationCost = {
+      appleCount: 50000,
+      honeyCount: 20000,
+      pomegranateCount: 5000
+    };
+    var intergalacticCelebrationCost = {
+      appleCount: 100000,
+      honeyCount: 50000,
+      pomegranateCount: 10000
+    };
+    var temporalCelebrationCost = {
+      appleCount: 500000,
+      honeyCount: 200000,
+      pomegranateCount: 50000
+    };
+    var celebrationSingularityCost = {
+      appleCount: 1000000,
+      honeyCount: 500000,
+      pomegranateCount: 100000
+    };
+    var infiniteCelebrationParadoxCost = {
+      appleCount: 5000000,
+      honeyCount: 2000000,
+      pomegranateCount: 500000
+    };
+    var omniversalCelebrationCost = {
+      appleCount: 10000000,
+      honeyCount: 5000000,
+      pomegranateCount: 1000000
+    };
+    var oneCelebrationCost = {
+      appleCount: 50000000,
+      honeyCount: 20000000,
+      pomegranateCount: 5000000
+    };
+
+// Upgrade Costs
+
+// Apple Upgrades
+var treeCost = 25;
+
+var orchardCost = 500;
+var orchardHoneyCost = 50;
+
+var appleFactoryCost = 2000;
+var appleFactoryHoneyCost = 200;
+
+var appleSupplyChainCost = 5000;
+var appleSupplyChainHoneyCost = 500;
+
+var appleEmpireCost = 10000;
+var appleEmpireHoneyCost = 1000;
+
+var appleMultiverseCost = 50000;
+var appleMultiverseHoneyCost = 5000;
+
+var appleSingularityCost = 100000;
+var appleSingularityHoneyCost = 10000;
+
+var quantumAppleFacilityCost = 500000;
+var quantumAppleFacilityHoneyCost = 50000;
+
+// Honey Upgrades
+var beehiveCost = 50;
+
+var honeyFarmCost = 250;
+var honeyFarmAppleCost = 200;
+
+var honeyProcessingPlantCost = 2000;
+var honeyProcessingPlantAppleCost = 800;
+
+var honeyCorporationCost = 5000;
+var honeyCorporationAppleCost = 2000;
+
+var honeycombCollectorCost = 20000;
+var honeycombCollectorAppleCost = 8000;
+
+var quantumHoneyReactorCost = 100000;
+var quantumHoneyReactorAppleCost = 40000;
+
+var honeyGalaxyCost = 500000;
+var honeyGalaxyAppleCost = 200000;
+
+var honeyTimeDilatorCost = 1000000;
+var honeyTimeDilatorAppleCost = 400000;
+
+var honeyBlackHoleCost = 5000000;
+var honeyBlackHoleAppleCost = 2000000;
+
+var honeyverseCreatorCost = 10000000;
+var honeyverseCreatorAppleCost = 4000000;
+
+var honeySingularityMatrixCost = 50000000;
+var honeySingularityMatrixAppleCost = 20000000;
+
+var infiniteHoneyContinuumCost = 100000000;
+var infiniteHoneyContinuumAppleCost = 40000000;
+
+// Pomegranate Upgrades
+var pomegranateTreeCost = 0;
+
+var pomegranateGroveCost = 500;
+var pomegranateGroveHoneyCost = 50;
+
+var pomegranateDimensionExpanderCost = 2000;
+var pomegranateDimensionExpanderHoneyCost = 200;
+
+var quantumPomegranateColliderCost = 5000;
+var quantumPomegranateColliderHoneyCost = 500;
+
+var pomegranateRealityDistorterCost = 10000;
+var pomegranateRealityDistorterHoneyCost = 1000;
+
+var pomegranateMultiverseWeaverCost = 50000;
+var pomegranateMultiverseWeaverHoneyCost = 5000;
+
+// New Upgrades
+var honeyedApplesCost = 100;
+var honeyedApplesHoneyCost = 25;
+
+var goldenBeeHoneyCost = 200;
+var goldenBeePomegranateCost = 50;
+
+var megaChallahHoneyCost = 1500;
+var megaChallahPomegranateCost = 50;
+
+var shofarCost = 25;
+
+
+    // Achievements
+    var achievements = [];
+
+    var gameArea = document.getElementById('game-area');
+
+    // Production Multipliers
+    var productionMultiplier = 1;
+    var appleProductionMultiplier = 1;
+    var honeyProductionMultiplier = 1;
+    var pomegranateProductionMultiplier = 1;
+
+    // Shofar State
+    var isShofarActive = false;
+    var shofarDuration = 30000; // 30 seconds
+
+    // Function to display notifications
+    function showNotification(message) {
+      var notificationArea = document.getElementById('notification-area');
+      notificationArea.innerText = message;
+      setTimeout(function() {
+        if (notificationArea.innerText === message) {
+          notificationArea.innerText = '';
+        }
+      }, 5000); // 5 seconds
+    }
+
+    // Function to create falling apples
+    function createFallingApple() {
+      var apple = document.createElement('img');
+      apple.src = 'images/apple.png';
+      apple.style.width = '50px';
+      apple.style.position = 'absolute';
+      apple.style.left = Math.random() * (gameArea.clientWidth - 50) + 'px';
+      apple.style.top = '-50px';
+      apple.style.cursor = 'pointer';
+      apple.onclick = function() {
+        var appleValue = 1;
+        if (honeyedApplesCount > 0) {
+          appleValue *= 1 + (0.1 * honeyedApplesCount); // Increase value by 10% per Honeyed Apples upgrade
+        }
+        appleCount += appleValue;
+        updateResources();
+        this.remove();
+      };
+      gameArea.appendChild(apple);
+      fall(apple);
+    }
+
+    // Function to make apples fall
+    function fall(element) {
+      var top = -50;
+      var falling = setInterval(function() {
+        if (top < gameArea.clientHeight) {
+          top += 1;
+          element.style.top = top + 'px';
+        } else {
+          element.remove();
+          clearInterval(falling);
+        }
+      }, 20);
+    }
+
+    // Function to update resource display
+    function updateResources() {
+      document.getElementById('apples').innerText = Math.floor(appleCount);
+      document.getElementById('honey').innerText = Math.floor(honeyCount);
+      document.getElementById('pomegranates').innerText = Math.floor(pomegranateCount);
+      checkAchievements();
+    }
+
+    // Function to collect apples manually
+    function collectApples() {
+      var applesCollected = 1 + (treeCount * 0.5);
+      applesCollected *= appleProductionMultiplier;
+
+      // Apply Honeyed Apples bonus
+      if (honeyedApplesCount > 0) {
+        applesCollected *= 1 + (0.1 * honeyedApplesCount); // Increase apples collected by 10% per upgrade
+      }
+
+      appleCount += Math.floor(applesCollected * productionMultiplier);
+      updateResources();
+    }
+
+    // Function to blow the shofar
+    function blowShofar() {
+      if (isShofarActive) {
+        showNotification('Shofar is already active!');
+        return;
+      }
+      if (honeyCount >= shofarCost) {
+        honeyCount -= shofarCost;
+        shofarCount++;
+        shofarCost = Math.round(shofarCost * 1.5);
+        document.getElementById('shofarCostDisplay').innerText = shofarCost;
+        updateResources();
+        playShofarSound();
+        showNotification("You blew the Shofar! Production rates doubled for 30 seconds.");
+        isShofarActive = true;
+        // Double production rates
+        productionMultiplier *= 2;
+        gameArea.style.backgroundImage = "url('images/shofar_effect.png')";
+        var shofarTimeLeft = shofarDuration / 1000;
+        var shofarCooldownDisplay = document.getElementById('shofarCooldown');
+        var shofarInterval = setInterval(function() {
+          shofarTimeLeft--;
+          shofarCooldownDisplay.innerText = 'Shofar active: ' + shofarTimeLeft + 's remaining';
+          if (shofarTimeLeft <= 0) {
+            clearInterval(shofarInterval);
+            isShofarActive = false;
+            productionMultiplier /= 2;
+            showNotification("The effect of the Shofar has ended.");
+            gameArea.style.backgroundImage = "url('images/gamebg.png')";
+            shofarCooldownDisplay.innerText = '';
+          }
+        }, 1000);
+      } else {
+        showNotification('Not enough honey to blow the Shofar!');
+      }
+    }
+
+    // Function to play shofar sound
+    function playShofarSound() {
+      var audio = new Audio('sounds/shofar.mp3');
+      audio.play();
+    }
+
+// Function to generate resources
+    function generateResources() {
+        // Apple generation
+        var appleGeneration = (treeCount * 0.5);
+        if (orchardCount > 0) {
+            appleGeneration *= 2 * orchardCount;
+        }
+        if (appleFactoryCount > 0) {
+            appleGeneration *= 2 * appleFactoryCount;
+        }
+        if (appleSupplyChainCount > 0) {
+            appleGeneration *= 2 * appleSupplyChainCount;
+        }
+        if (appleEmpireCount > 0) {
+            appleGeneration *= 2 * appleEmpireCount;
+        }
+        if (appleMultiverseCount > 0) {
+            appleGeneration *= 2 * appleMultiverseCount;
+        }
+        if (appleSingularityCount > 0) {
+            appleGeneration *= 3 * appleSingularityCount;
+        }
+        if (quantumAppleFacilityCount > 0) {
+            appleGeneration *= 5 * quantumAppleFacilityCount;
+        }
+
+        // Honey production from beehives
+        var honeyGeneration = (beehiveCount * 0.1);
+        if (honeyFarmCount > 0) {
+            honeyGeneration *= 2 * honeyFarmCount;
+        }
+        if (honeyProcessingPlantCount > 0) {
+            honeyGeneration *= 2 * honeyProcessingPlantCount;
+        }
+        if (honeyCorporationCount > 0) {
+            honeyGeneration *= 2 * honeyCorporationCount;
+        }
+        if (honeycombCollectorCount > 0) {
+            honeyGeneration *= 2 * honeycombCollectorCount;
+        }
+        if (quantumHoneyReactorCount > 0) {
+            honeyGeneration *= 3 * quantumHoneyReactorCount;
+        }
+        if (honeyGalaxyCount > 0) {
+            honeyGeneration *= 2 * honeyGalaxyCount;
+        }
+        if (honeyTimeDilatorCount > 0) {
+            honeyGeneration *= 5 * honeyTimeDilatorCount;
+        }
+        if (honeyBlackHoleCount > 0) {
+            honeyGeneration *= 3 * honeyBlackHoleCount;
+        }
+        if (honeyverseCreatorCount > 0) {
+            honeyGeneration *= 5 * honeyverseCreatorCount;
+        }
+        if (honeySingularityMatrixCount > 0) {
+            honeyGeneration *= 7 * honeySingularityMatrixCount;
+        }
+        if (infiniteHoneyContinuumCount > 0) {
+            honeyGeneration *= 10 * infiniteHoneyContinuumCount;
+        }
+        appleGeneration *= appleProductionMultiplier;
+        appleCount += appleGeneration * productionMultiplier;
+        honeyGeneration *= honeyProductionMultiplier * productionMultiplier;
+        honeyCount += honeyGeneration;
+
+        console.log("Honey generation per tick: " + honeyGeneration.toFixed(4) + 
+                    ", Total honey (including fractional): " + honeyCount.toFixed(4) + 
+                    ", Displayed honeyCount: " + Math.floor(honeyCount));
+
+        // Pomegranate generation
+        var pomegranateGeneration = (pomegranateTreeCount * 0.2);
+        if (pomegranateGroveCount > 0) {
+            pomegranateGeneration *= 2 * pomegranateGroveCount;
+        }
+        if (pomegranateDimensionExpanderCount > 0) {
+            pomegranateGeneration *= 2 * pomegranateDimensionExpanderCount;
+        }
+        if (quantumPomegranateColliderCount > 0) {
+            pomegranateGeneration *= 3 * quantumPomegranateColliderCount;
+        }
+        if (pomegranateRealityDistorterCount > 0) {
+            pomegranateGeneration *= 5 * pomegranateRealityDistorterCount;
+        }
+        if (pomegranateMultiverseWeaverCount > 0) {
+            pomegranateGeneration *= 5 * pomegranateMultiverseWeaverCount;
+        }
+        pomegranateGeneration *= pomegranateProductionMultiplier;
+        pomegranateCount += pomegranateGeneration * productionMultiplier;
+
+    updateResources();
+    }
+
+
+    // Function to buy upgrades
+    function buyUpgrade(upgrade) {
+      switch(upgrade) {
+        // Apple Upgrades
+        case 'tree':
+          if (appleCount >= treeCost) {
+            appleCount -= treeCost;
+            treeCount++;
+            treeCost = Math.round(treeCost * 1.2);
+            document.getElementById('treeCost').innerText = treeCost;
+            addTreeImage();
+            // Unlock Orchard after purchasing a certain number of trees
+            if (treeCount >= 5 && !document.getElementById('orchard')) {
+              unlockUpgrade('orchard', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough apples!');
+          }
+          break;
+        case 'orchard':
+          if (appleCount >= orchardCost && honeyCount >= orchardHoneyCost) {
+            appleCount -= orchardCost;
+            honeyCount -= orchardHoneyCost;
+            orchardCount++;
+            orchardCost = Math.round(orchardCost * 1.5);
+            orchardHoneyCost = Math.round(orchardHoneyCost * 1.5);
+            document.getElementById('orchardCost').innerText = orchardCost;
+            document.getElementById('orchardHoneyCost').innerText = orchardHoneyCost;
+            gameArea.style.backgroundImage = "url('images/orchard.png')";
+            // Unlock Apple Factory
+            if (orchardCount >= 1 && !document.getElementById('appleFactory')) {
+              unlockUpgrade('appleFactory', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources!');
+          }
+          break;
+        case 'appleFactory':
+          if (appleCount >= appleFactoryCost && honeyCount >= appleFactoryHoneyCost && orchardCount >= 1) {
+            appleCount -= appleFactoryCost;
+            honeyCount -= appleFactoryHoneyCost;
+            appleFactoryCount++;
+            appleFactoryCost = Math.round(appleFactoryCost * 2);
+            appleFactoryHoneyCost = Math.round(appleFactoryHoneyCost * 2);
+            document.getElementById('appleFactoryCost').innerText = appleFactoryCost;
+            document.getElementById('appleFactoryHoneyCost').innerText = appleFactoryHoneyCost;
+            appleProductionMultiplier *= 2; // Double apple production
+            showNotification('Your Apple Factory is operational! Apple production doubled.');
+            gameArea.style.backgroundImage = "url('images/apple_factory.png')";
+            // Unlock Apple Supply Chain
+            if (appleFactoryCount >= 1 && !document.getElementById('appleSupplyChain')) {
+              unlockUpgrade('appleSupplyChain', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'appleSupplyChain':
+          if (appleCount >= appleSupplyChainCost && honeyCount >= appleSupplyChainHoneyCost && appleFactoryCount >= 1) {
+            appleCount -= appleSupplyChainCost;
+            honeyCount -= appleSupplyChainHoneyCost;
+            appleSupplyChainCount++;
+            appleSupplyChainCost = Math.round(appleSupplyChainCost * 2);
+            appleSupplyChainHoneyCost = Math.round(appleSupplyChainHoneyCost * 2);
+            document.getElementById('appleSupplyChainCost').innerText = appleSupplyChainCost;
+            document.getElementById('appleSupplyChainHoneyCost').innerText = appleSupplyChainHoneyCost;
+            appleProductionMultiplier *= 2; // Double apple production again
+            showNotification('Your Apple Supply Chain is established! Apple production doubled.');
+            gameArea.style.backgroundImage = "url('images/apple_supply_chain.png')";
+            // Unlock Apple Empire
+            if (appleSupplyChainCount >= 1 && !document.getElementById('appleEmpire')) {
+              unlockUpgrade('appleEmpire', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'appleEmpire':
+          if (appleCount >= appleEmpireCost && honeyCount >= appleEmpireHoneyCost && appleSupplyChainCount >= 1) {
+            appleCount -= appleEmpireCost;
+            honeyCount -= appleEmpireHoneyCost;
+            appleEmpireCount++;
+            appleEmpireCost = Math.round(appleEmpireCost * 2);
+            appleEmpireHoneyCost = Math.round(appleEmpireHoneyCost * 2);
+            document.getElementById('appleEmpireCost').innerText = appleEmpireCost;
+            document.getElementById('appleEmpireHoneyCost').innerText = appleEmpireHoneyCost;
+            appleProductionMultiplier *= 2; // Double apple production again
+            showNotification('You have built an Apple Empire! Apple production doubled.');
+            gameArea.style.backgroundImage = "url('images/apple_empire.png')";
+            // Unlock Apple Multiverse
+            if (appleEmpireCount >= 1 && !document.getElementById('appleMultiverse')) {
+              unlockUpgrade('appleMultiverse', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'appleMultiverse':
+          if (appleCount >= appleMultiverseCost && honeyCount >= appleMultiverseHoneyCost && appleEmpireCount >= 1) {
+            appleCount -= appleMultiverseCost;
+            honeyCount -= appleMultiverseHoneyCost;
+            appleMultiverseCount++;
+            appleMultiverseCost = Math.round(appleMultiverseCost * 2);
+            appleMultiverseHoneyCost = Math.round(appleMultiverseHoneyCost * 2);
+            document.getElementById('appleMultiverseCost').innerText = appleMultiverseCost;
+            document.getElementById('appleMultiverseHoneyCost').innerText = appleMultiverseHoneyCost;
+            appleProductionMultiplier *= 2; // Double apple production again
+            showNotification('You have unlocked the Apple Multiverse! Apple production doubled.');
+            gameArea.style.backgroundImage = "url('images/apple_multiverse.png')";
+            // Unlock Apple Singularity
+            if (appleMultiverseCount >= 1 && !document.getElementById('appleSingularity')) {
+              unlockUpgrade('appleSingularity', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'appleSingularity':
+          if (appleCount >= appleSingularityCost && honeyCount >= appleSingularityHoneyCost && appleMultiverseCount >= 1) {
+            appleCount -= appleSingularityCost;
+            honeyCount -= appleSingularityHoneyCost;
+            appleSingularityCount++;
+            appleSingularityCost = Math.round(appleSingularityCost * 2);
+            appleSingularityHoneyCost = Math.round(appleSingularityHoneyCost * 2);
+            document.getElementById('appleSingularityCost').innerText = appleSingularityCost;
+            document.getElementById('appleSingularityHoneyCost').innerText = appleSingularityHoneyCost;
+            appleProductionMultiplier *= 3; // Triple apple production
+            showNotification('You have achieved the Apple Singularity! Apple production tripled.');
+            gameArea.style.backgroundImage = "url('images/apple_singularity.png')";
+            // Unlock Quantum Apple Facility
+            if (appleSingularityCount >= 1 && !document.getElementById('quantumAppleFacility')) {
+              unlockUpgrade('quantumAppleFacility', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'quantumAppleFacility':
+          if (appleCount >= quantumAppleFacilityCost && honeyCount >= quantumAppleFacilityHoneyCost && appleSingularityCount >= 1) {
+            appleCount -= quantumAppleFacilityCost;
+            honeyCount -= quantumAppleFacilityHoneyCost;
+            quantumAppleFacilityCount++;
+            quantumAppleFacilityCost = Math.round(quantumAppleFacilityCost * 2);
+            quantumAppleFacilityHoneyCost = Math.round(quantumAppleFacilityHoneyCost * 2);
+            document.getElementById('quantumAppleFacilityCost').innerText = quantumAppleFacilityCost;
+            document.getElementById('quantumAppleFacilityHoneyCost').innerText = quantumAppleFacilityHoneyCost;
+            appleProductionMultiplier *= 5; // Quintuple apple production
+            showNotification('Quantum Apple Facility operational! Apple production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/quantum_apple_facility.png')";
+            // Unlock Apple Paradox Generator
+            if (quantumAppleFacilityCount >= 1 && !document.getElementById('appleParadoxGenerator')) {
+              unlockUpgrade('appleParadoxGenerator', 'appleUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        // Add further cases for other upgrades in the chain...
+
+        // Honey Upgrades
+        case 'beehive':
+          if (appleCount >= beehiveCost) {
+            appleCount -= beehiveCost;
+            beehiveCount++;
+            beehiveCost = Math.round(beehiveCost * 1.2);
+            document.getElementById('beehiveCost').innerText = beehiveCost;
+            addBeehiveImage();
+            var honeyPerSecond = (beehiveCount * 0.1 * honeyProductionMultiplier * productionMultiplier).toFixed(1);
+            showNotification("Beehive built! You'll now produce " + honeyPerSecond + " honey per second.");
+            // Unlock Honey Farm after purchasing 5 beehives
+            if (beehiveCount >= 5 && !document.getElementById('honeyFarm')) {
+              unlockUpgrade('honeyFarm', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough apples!');
+          }
+          break;
+        case 'honeyFarm':
+          if (honeyCount >= honeyFarmCost && appleCount >= honeyFarmAppleCost && beehiveCount >= 5) {
+            honeyCount -= honeyFarmCost;
+            appleCount -= honeyFarmAppleCost;
+            honeyFarmCount++;
+            honeyFarmCost = Math.round(honeyFarmCost * 1.5);
+            honeyFarmAppleCost = Math.round(honeyFarmAppleCost * 1.5);
+            document.getElementById('honeyFarmCost').innerText = honeyFarmCost;
+            document.getElementById('honeyFarmAppleCost').innerText = honeyFarmAppleCost;
+            honeyProductionMultiplier *= 2;
+            showNotification('Your Honey Farm is operational! Honey production doubled.');
+            gameArea.style.backgroundImage = "url('images/honey_farm.png')";
+            // Unlock Honey Processing Plant
+            if (honeyFarmCount >= 1 && !document.getElementById('honeyProcessingPlant')) {
+              unlockUpgrade('honeyProcessingPlant', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeyProcessingPlant':
+          if (honeyCount >= honeyProcessingPlantCost && appleCount >= honeyProcessingPlantAppleCost && honeyFarmCount >= 1) {
+            honeyCount -= honeyProcessingPlantCost;
+            appleCount -= honeyProcessingPlantAppleCost;
+            honeyProcessingPlantCount++;
+            honeyProcessingPlantCost = Math.round(honeyProcessingPlantCost * 2);
+            honeyProcessingPlantAppleCost = Math.round(honeyProcessingPlantAppleCost * 2);
+            document.getElementById('honeyProcessingPlantCost').innerText = honeyProcessingPlantCost;
+            document.getElementById('honeyProcessingPlantAppleCost').innerText = honeyProcessingPlantAppleCost;
+            honeyProductionMultiplier *= 2;
+            showNotification('Honey Processing Plant operational! Honey production doubled.');
+            gameArea.style.backgroundImage = "url('images/honey_processing_plant.png')";
+            // Unlock Honey Corporation
+            if (honeyProcessingPlantCount >= 1 && !document.getElementById('honeyCorporation')) {
+              unlockUpgrade('honeyCorporation', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeyCorporation':
+          if (honeyCount >= honeyCorporationCost && appleCount >= honeyCorporationAppleCost && honeyProcessingPlantCount >= 1) {
+            honeyCount -= honeyCorporationCost;
+            appleCount -= honeyCorporationAppleCost;
+            honeyCorporationCount++;
+            honeyCorporationCost = Math.round(honeyCorporationCost * 2);
+            honeyCorporationAppleCost = Math.round(honeyCorporationAppleCost * 2);
+            document.getElementById('honeyCorporationCost').innerText = honeyCorporationCost;
+            document.getElementById('honeyCorporationAppleCost').innerText = honeyCorporationAppleCost;
+            honeyProductionMultiplier *= 2;
+            showNotification('Honey Corporation established! Honey production doubled.');
+            gameArea.style.backgroundImage = "url('images/honey_corporation.png')";
+            // Unlock Honeycomb Collector
+            if (honeyCorporationCount >= 1 && !document.getElementById('honeycombCollector')) {
+              unlockUpgrade('honeycombCollector', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeycombCollector':
+          if (honeyCount >= honeycombCollectorCost && appleCount >= honeycombCollectorAppleCost && honeyCorporationCount >= 1) {
+            honeyCount -= honeycombCollectorCost;
+            appleCount -= honeycombCollectorAppleCost;
+            honeycombCollectorCount++;
+            honeycombCollectorCost = Math.round(honeycombCollectorCost * 1.5);
+            honeycombCollectorAppleCost = Math.round(honeycombCollectorAppleCost * 1.5);
+            document.getElementById('honeycombCollectorCost').innerText = honeycombCollectorCost;
+            document.getElementById('honeycombCollectorAppleCost').innerText = honeycombCollectorAppleCost;
+            honeyProductionMultiplier *= 2;
+            showNotification('Your Honeycomb Collector is operational! Honey production doubled.');
+            gameArea.style.backgroundImage = "url('images/honeycomb_collector.png')";
+            // Unlock Quantum Honey Reactor
+            if (honeycombCollectorCount >= 1 && !document.getElementById('quantumHoneyReactor')) {
+              unlockUpgrade('quantumHoneyReactor', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'quantumHoneyReactor':
+          if (honeyCount >= quantumHoneyReactorCost && appleCount >= quantumHoneyReactorAppleCost && honeycombCollectorCount >= 1) {
+            honeyCount -= quantumHoneyReactorCost;
+            appleCount -= quantumHoneyReactorAppleCost;
+            quantumHoneyReactorCount++;
+            quantumHoneyReactorCost = Math.round(quantumHoneyReactorCost * 2);
+            quantumHoneyReactorAppleCost = Math.round(quantumHoneyReactorAppleCost * 2);
+            document.getElementById('quantumHoneyReactorCost').innerText = quantumHoneyReactorCost;
+            document.getElementById('quantumHoneyReactorAppleCost').innerText = quantumHoneyReactorAppleCost;
+            honeyProductionMultiplier *= 3;
+            showNotification('Quantum Honey Reactor online! Honey production tripled.');
+            gameArea.style.backgroundImage = "url('images/quantum_honey_reactor.png')";
+            // Unlock Honey Galaxy
+            if (quantumHoneyReactorCount >= 1 && !document.getElementById('honeyGalaxy')) {
+              unlockUpgrade('honeyGalaxy', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeyGalaxy':
+          if (honeyCount >= honeyGalaxyCost && appleCount >= honeyGalaxyAppleCost && quantumHoneyReactorCount >= 1) {
+            honeyCount -= honeyGalaxyCost;
+            appleCount -= honeyGalaxyAppleCost;
+            honeyGalaxyCount++;
+            honeyGalaxyCost = Math.round(honeyGalaxyCost * 2);
+            honeyGalaxyAppleCost = Math.round(honeyGalaxyAppleCost * 2);
+            document.getElementById('honeyGalaxyCost').innerText = honeyGalaxyCost;
+            document.getElementById('honeyGalaxyAppleCost').innerText = honeyGalaxyAppleCost;
+            honeyProductionMultiplier *= 2;
+            showNotification('Honey Galaxy explored! Honey production doubled.');
+            gameArea.style.backgroundImage = "url('images/honey_galaxy.png')";
+            // Unlock Honey Time Dilator
+            if (honeyGalaxyCount >= 1 && !document.getElementById('honeyTimeDilator')) {
+              unlockUpgrade('honeyTimeDilator', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeyTimeDilator':
+          if (honeyCount >= honeyTimeDilatorCost && appleCount >= honeyTimeDilatorAppleCost && honeyGalaxyCount >= 1) {
+            honeyCount -= honeyTimeDilatorCost;
+            appleCount -= honeyTimeDilatorAppleCost;
+            honeyTimeDilatorCount++;
+            honeyTimeDilatorCost = Math.round(honeyTimeDilatorCost * 2);
+            honeyTimeDilatorAppleCost = Math.round(honeyTimeDilatorAppleCost * 2);
+            document.getElementById('honeyTimeDilatorCost').innerText = honeyTimeDilatorCost;
+            document.getElementById('honeyTimeDilatorAppleCost').innerText = honeyTimeDilatorAppleCost;
+            honeyProductionMultiplier *= 5;
+            showNotification('Honey Time Dilator activated! Honey production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/honey_time_dilator.png')";
+            // Unlock Honey Black Hole
+            if (honeyTimeDilatorCount >= 1 && !document.getElementById('honeyBlackHole')) {
+              unlockUpgrade('honeyBlackHole', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeyBlackHole':
+          if (honeyCount >= honeyBlackHoleCost && appleCount >= honeyBlackHoleAppleCost && honeyTimeDilatorCount >= 1) {
+            honeyCount -= honeyBlackHoleCost;
+            appleCount -= honeyBlackHoleAppleCost;
+            honeyBlackHoleCount++;
+            honeyBlackHoleCost = Math.round(honeyBlackHoleCost * 2);
+            honeyBlackHoleAppleCost = Math.round(honeyBlackHoleAppleCost * 2);
+            document.getElementById('honeyBlackHoleCost').innerText = honeyBlackHoleCost;
+            document.getElementById('honeyBlackHoleAppleCost').innerText = honeyBlackHoleAppleCost;
+            honeyProductionMultiplier *= 3;
+            showNotification('Honey Black Hole opened! Honey production tripled.');
+            gameArea.style.backgroundImage = "url('images/honey_black_hole.png')";
+            // Unlock Honeyverse Creator
+            if (honeyBlackHoleCount >= 1 && !document.getElementById('honeyverseCreator')) {
+              unlockUpgrade('honeyverseCreator', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeyverseCreator':
+          if (honeyCount >= honeyverseCreatorCost && appleCount >= honeyverseCreatorAppleCost && honeyBlackHoleCount >= 1) {
+            honeyCount -= honeyverseCreatorCost;
+            appleCount -= honeyverseCreatorAppleCost;
+            honeyverseCreatorCount++;
+            honeyverseCreatorCost = Math.round(honeyverseCreatorCost * 2);
+            honeyverseCreatorAppleCost = Math.round(honeyverseCreatorAppleCost * 2);
+            document.getElementById('honeyverseCreatorCost').innerText = honeyverseCreatorCost;
+            document.getElementById('honeyverseCreatorAppleCost').innerText = honeyverseCreatorAppleCost;
+            honeyProductionMultiplier *= 5;
+            showNotification('Honeyverse Creator activated! Honey production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/honeyverse_creator.png')";
+            // Unlock Honey Singularity Matrix
+            if (honeyverseCreatorCount >= 1 && !document.getElementById('honeySingularityMatrix')) {
+              unlockUpgrade('honeySingularityMatrix', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'honeySingularityMatrix':
+          if (honeyCount >= honeySingularityMatrixCost && appleCount >= honeySingularityMatrixAppleCost && honeyverseCreatorCount >= 1) {
+            honeyCount -= honeySingularityMatrixCost;
+            appleCount -= honeySingularityMatrixAppleCost;
+            honeySingularityMatrixCount++;
+            honeySingularityMatrixCost = Math.round(honeySingularityMatrixCost * 2);
+            honeySingularityMatrixAppleCost = Math.round(honeySingularityMatrixAppleCost * 2);
+            document.getElementById('honeySingularityMatrixCost').innerText = honeySingularityMatrixCost;
+            document.getElementById('honeySingularityMatrixAppleCost').innerText = honeySingularityMatrixAppleCost;
+            honeyProductionMultiplier *= 7;
+            showNotification('Honey Singularity Matrix deployed! Honey production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/honey_singularity_matrix.png')";
+            // Unlock Infinite Honey Continuum
+            if (honeySingularityMatrixCount >= 1 && !document.getElementById('infiniteHoneyContinuum')) {
+              unlockUpgrade('infiniteHoneyContinuum', 'honeyUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'infiniteHoneyContinuum':
+          if (honeyCount >= infiniteHoneyContinuumCost && appleCount >= infiniteHoneyContinuumAppleCost && honeySingularityMatrixCount >= 1) {
+            honeyCount -= infiniteHoneyContinuumCost;
+            appleCount -= infiniteHoneyContinuumAppleCost;
+            infiniteHoneyContinuumCount++;
+            infiniteHoneyContinuumCost = Math.round(infiniteHoneyContinuumCost * 2);
+            infiniteHoneyContinuumAppleCost = Math.round(infiniteHoneyContinuumAppleCost * 2);
+            document.getElementById('infiniteHoneyContinuumCost').innerText = infiniteHoneyContinuumCost;
+            document.getElementById('infiniteHoneyContinuumAppleCost').innerText = infiniteHoneyContinuumAppleCost;
+            honeyProductionMultiplier *= 10;
+            showNotification('Infinite Honey Continuum achieved! Honey production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/infinite_honey_continuum.png')";
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+
+        // Pomegranate Upgrades
+        case 'pomegranateTree':
+          if (honeyCount >= pomegranateTreeCost) {
+            honeyCount -= pomegranateTreeCost;
+            pomegranateTreeCount++;
+            pomegranateTreeCost = Math.round(pomegranateTreeCost * 1.2);
+            document.getElementById('pomegranateTreeCost').innerText = pomegranateTreeCost;
+            addPomegranateTreeImage();
+            // Unlock Pomegranate Grove after 5 trees
+            if (pomegranateTreeCount >= 5 && !document.getElementById('pomegranateGrove')) {
+              unlockUpgrade('pomegranateGrove', 'pomegranateUpgrades');
+            }
+          } else {
+            showNotification('Not enough honey!');
+          }
+          break;
+        case 'pomegranateGrove':
+          if (pomegranateCount >= pomegranateGroveCost && honeyCount >= pomegranateGroveHoneyCost && pomegranateTreeCount >= 5) {
+            pomegranateCount -= pomegranateGroveCost;
+            honeyCount -= pomegranateGroveHoneyCost;
+            pomegranateGroveCount++;
+            pomegranateGroveCost = Math.round(pomegranateGroveCost * 1.5);
+            pomegranateGroveHoneyCost = Math.round(pomegranateGroveHoneyCost * 1.5);
+            document.getElementById('pomegranateGroveCost').innerText = pomegranateGroveCost;
+            document.getElementById('pomegranateGroveHoneyCost').innerText = pomegranateGroveHoneyCost;
+            pomegranateProductionMultiplier *= 2;
+            showNotification('Pomegranate Grove cultivated! Pomegranate production doubled.');
+            gameArea.style.backgroundImage = "url('images/pomegranate_grove.png')";
+            // Unlock Pomegranate Dimension Expander
+            if (pomegranateGroveCount >= 1 && !document.getElementById('pomegranateDimensionExpander')) {
+              unlockUpgrade('pomegranateDimensionExpander', 'pomegranateUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'pomegranateDimensionExpander':
+          if (pomegranateCount >= pomegranateDimensionExpanderCost && honeyCount >= pomegranateDimensionExpanderHoneyCost && pomegranateGroveCount >= 1) {
+            pomegranateCount -= pomegranateDimensionExpanderCost;
+            honeyCount -= pomegranateDimensionExpanderHoneyCost;
+            pomegranateDimensionExpanderCount++;
+            pomegranateDimensionExpanderCost = Math.round(pomegranateDimensionExpanderCost * 1.5);
+            pomegranateDimensionExpanderHoneyCost = Math.round(pomegranateDimensionExpanderHoneyCost * 1.5);
+            document.getElementById('pomegranateDimensionExpanderCost').innerText = pomegranateDimensionExpanderCost;
+            document.getElementById('pomegranateDimensionExpanderHoneyCost').innerText = pomegranateDimensionExpanderHoneyCost;
+            pomegranateProductionMultiplier *= 2;
+            showNotification('Pomegranate Dimension Expander is functioning! Pomegranate production doubled.');
+            gameArea.style.backgroundImage = "url('images/pomegranate_dimension_expander.png')";
+            // Unlock Quantum Pomegranate Collider
+            if (pomegranateDimensionExpanderCount >= 1 && !document.getElementById('quantumPomegranateCollider')) {
+              unlockUpgrade('quantumPomegranateCollider', 'pomegranateUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'quantumPomegranateCollider':
+          if (pomegranateCount >= quantumPomegranateColliderCost && honeyCount >= quantumPomegranateColliderHoneyCost && pomegranateDimensionExpanderCount >= 1) {
+            pomegranateCount -= quantumPomegranateColliderCost;
+            honeyCount -= quantumPomegranateColliderHoneyCost;
+            quantumPomegranateColliderCount++;
+            quantumPomegranateColliderCost = Math.round(quantumPomegranateColliderCost * 2);
+            quantumPomegranateColliderHoneyCost = Math.round(quantumPomegranateColliderHoneyCost * 2);
+            document.getElementById('quantumPomegranateColliderCost').innerText = quantumPomegranateColliderCost;
+            document.getElementById('quantumPomegranateColliderHoneyCost').innerText = quantumPomegranateColliderHoneyCost;
+            pomegranateProductionMultiplier *= 3;
+            showNotification('Quantum Pomegranate Collider activated! Pomegranate production tripled.');
+            gameArea.style.backgroundImage = "url('images/quantum_pomegranate_collider.png')";
+            // Unlock Pomegranate Reality Distorter
+            if (quantumPomegranateColliderCount >= 1 && !document.getElementById('pomegranateRealityDistorter')) {
+              unlockUpgrade('pomegranateRealityDistorter', 'pomegranateUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'pomegranateRealityDistorter':
+          if (pomegranateCount >= pomegranateRealityDistorterCost && honeyCount >= pomegranateRealityDistorterHoneyCost && quantumPomegranateColliderCount >= 1) {
+            pomegranateCount -= pomegranateRealityDistorterCost;
+            honeyCount -= pomegranateRealityDistorterHoneyCost;
+            pomegranateRealityDistorterCount++;
+            pomegranateRealityDistorterCost = Math.round(pomegranateRealityDistorterCost * 2);
+            pomegranateRealityDistorterHoneyCost = Math.round(pomegranateRealityDistorterHoneyCost * 2);
+            document.getElementById('pomegranateRealityDistorterCost').innerText = pomegranateRealityDistorterCost;
+            document.getElementById('pomegranateRealityDistorterHoneyCost').innerText = pomegranateRealityDistorterHoneyCost;
+            pomegranateProductionMultiplier *= 5;
+            showNotification('Pomegranate Reality Distorter online! Pomegranate production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/pomegranate_reality_distorter.png')";
+            // Unlock Pomegranate Multiverse Weaver
+            if (pomegranateRealityDistorterCount >= 1 && !document.getElementById('pomegranateMultiverseWeaver')) {
+              unlockUpgrade('pomegranateMultiverseWeaver', 'pomegranateUpgrades');
+            }
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+        case 'pomegranateMultiverseWeaver':
+          if (pomegranateCount >= pomegranateMultiverseWeaverCost && honeyCount >= pomegranateMultiverseWeaverHoneyCost && pomegranateRealityDistorterCount >= 1) {
+            pomegranateCount -= pomegranateMultiverseWeaverCost;
+            honeyCount -= pomegranateMultiverseWeaverHoneyCost;
+            pomegranateMultiverseWeaverCount++;
+            pomegranateMultiverseWeaverCost = Math.round(pomegranateMultiverseWeaverCost * 2);
+            pomegranateMultiverseWeaverHoneyCost = Math.round(pomegranateMultiverseWeaverHoneyCost * 2);
+            document.getElementById('pomegranateMultiverseWeaverCost').innerText = pomegranateMultiverseWeaverCost;
+            document.getElementById('pomegranateMultiverseWeaverHoneyCost').innerText = pomegranateMultiverseWeaverHoneyCost;
+            pomegranateProductionMultiplier *= 5;
+            showNotification('Pomegranate Multiverse Weaver activated! Pomegranate production increased drastically.');
+            gameArea.style.backgroundImage = "url('images/pomegranate_multiverse_weaver.png')";
+            // Continue unlocking further upgrades if any
+          } else {
+            showNotification('Not enough resources or prerequisites!');
+          }
+          break;
+
+        // New Upgrades
+        case 'honeyedApples':
+          if (appleCount >= honeyedApplesCost && honeyCount >= honeyedApplesHoneyCost) {
+            appleCount -= honeyedApplesCost;
+            honeyCount -= honeyedApplesHoneyCost;
+            honeyedApplesCount++;
+            honeyedApplesCost = Math.round(honeyedApplesCost * 1.5);
+            honeyedApplesHoneyCost = Math.round(honeyedApplesHoneyCost * 1.5);
+            document.getElementById('honeyedApplesCost').innerText = honeyedApplesCost;
+            document.getElementById('honeyedApplesHoneyCost').innerText = honeyedApplesHoneyCost;
+            showNotification('Honeyed Apples purchased! Apples are now more valuable.');
+          } else {
+            showNotification('Not enough resources for Honeyed Apples!');
+          }
+          break;
+
+        case 'goldenBee':
+          if (honeyCount >= goldenBeeHoneyCost && pomegranateCount >= goldenBeePomegranateCost) {
+            honeyCount -= goldenBeeHoneyCost;
+            pomegranateCount -= goldenBeePomegranateCost;
+            goldenBeeCount++;
+            goldenBeeHoneyCost = Math.round(goldenBeeHoneyCost * 2);
+            goldenBeePomegranateCost = Math.round(goldenBeePomegranateCost * 2);
+            document.getElementById('goldenBeeHoneyCost').innerText = goldenBeeHoneyCost;
+            document.getElementById('goldenBeePomegranateCost').innerText = goldenBeePomegranateCost;
+            honeyProductionMultiplier *= 2; // Double honey production
+            showNotification('Golden Bee acquired! Honey production doubled.');
+            addGoldenBeeImage();
+          } else {
+            showNotification('Not enough resources for Golden Bee!');
+          }
+          break;
+
+        case 'megaChallah':
+          if (honeyCount >= megaChallahHoneyCost && pomegranateCount >= megaChallahPomegranateCost) {
+            honeyCount -= megaChallahHoneyCost;
+            pomegranateCount -= megaChallahPomegranateCost;
+            megaChallahCount++;
+            megaChallahHoneyCost = Math.round(megaChallahHoneyCost * 2);
+            megaChallahPomegranateCost = Math.round(megaChallahPomegranateCost * 2);
+            document.getElementById('megaChallahHoneyCost').innerText = megaChallahHoneyCost;
+            document.getElementById('megaChallahPomegranateCost').innerText = megaChallahPomegranateCost;
+            productionMultiplier *= 1.5; // Increase overall production rate by 50%
+            showNotification('Mega Challah baked! Overall production increased.');
+          } else {
+            showNotification('Not enough resources for Mega Challah!');
+          }
+          break;
+
+        default:
+          showNotification('Upgrade not recognized.');
+      }
+      updateResources();
+    }
+
+    // Function to add tree image
+    function addTreeImage() {
+      var tree = document.createElement('img');
+      tree.src = 'images/tree.png';
+      tree.style.width = '150px';
+      tree.style.position = 'absolute';
+      tree.style.left = Math.random() * (gameArea.clientWidth - 150) + 'px';
+      tree.style.bottom = '0px';
+      gameArea.appendChild(tree);
+    }
+
+    // Function to add beehive image
+    function addBeehiveImage() {
+      var beehive = document.createElement('img');
+      beehive.src = 'images/beehive.png';
+      beehive.style.width = '120px';
+      beehive.style.position = 'absolute';
+      beehive.style.left = Math.random() * (gameArea.clientWidth - 120) + 'px';
+      beehive.style.bottom = '10px';
+      gameArea.appendChild(beehive);
+    }
+
+    // Function to add pomegranate tree image
+    function addPomegranateTreeImage() {
+      var pomegranateTree = document.createElement('img');
+      pomegranateTree.src = 'images/pomegranate_tree.png';
+      pomegranateTree.style.width = '150px';
+      pomegranateTree.style.position = 'absolute';
+      pomegranateTree.style.left = Math.random() * (gameArea.clientWidth - 150) + 'px';
+      pomegranateTree.style.bottom = '0px';
+      gameArea.appendChild(pomegranateTree);
+    }
+
+    // Check for achievements
+    function checkAchievements() {
+      var achievementsDiv = document.getElementById('achievements');
+      if (achievements.length === 0) {
+        achievementsDiv.innerText = '';
+      }
+      if (appleCount >= 100 && !achievements.includes('apple100')) {
+        achievements.push('apple100');
+        achievementsDiv.innerText += '\nCollected 100 Apples!';
+      }
+      if (honeyCount >= 50 && !achievements.includes('honey50')) {
+        achievements.push('honey50');
+        achievementsDiv.innerText += '\nHarvested 50 Honey!';
+      }
+      if (pomegranateCount >= 20 && !achievements.includes('pomegranate20')) {
+        achievements.push('pomegranate20');
+        achievementsDiv.innerText += '\nGrew 20 Pomegranates!';
+      }
+      if (appleFactoryCount > 0 && !achievements.includes('appleFactory')) {
+        achievements.push('appleFactory');
+        achievementsDiv.innerText += '\nBuilt an Apple Factory!';
+      }
+      if (honeycombCollectorCount > 0 && !achievements.includes('honeycombCollector')) {
+        achievements.push('honeycombCollector');
+        achievementsDiv.innerText += '\nDeployed a Honeycomb Collector!';
+      }
+      if (pomegranateDimensionExpanderCount > 0 && !achievements.includes('pomegranateDimensionExpander')) {
+        achievements.push('pomegranateDimensionExpander');
+        achievementsDiv.innerText += '\nExpanded Pomegranate Dimensions!';
+      }
+      // Add more achievements for advanced upgrades...
+      if (achievements.length === 0) {
+        achievementsDiv.innerText = 'None yet.';
+      }
+    }
+
+    // Celebration Functions
+    function celebrate() {
+      if (
+        appleCount >= celebrationCost.appleCount &&
+        honeyCount >= celebrationCost.honeyCount &&
+        pomegranateCount >= celebrationCost.pomegranateCount
+      ) {
+        appleCount -= celebrationCost.appleCount;
+        honeyCount -= celebrationCost.honeyCount;
+        pomegranateCount -= celebrationCost.pomegranateCount;
+        celebrationCount++;
+
+        // Boost production multipliers
+        productionMultiplier *= 2;
+
+        // Change background image
+        gameArea.style.backgroundImage = "url('images/celebration.png')";
+
+        // Show notification
+        showNotification('Happy Rosh Hashanah! Production doubled.');
+
+        // Unlock next celebration
+        unlockCelebration('grandCelebration');
+
+        updateResources();
+      } else {
+        showNotification('Not enough resources to celebrate!');
+      }
+    }
+
+    function grandCelebration() {
+        if (
+            appleCount >= grandCelebrationCost.appleCount &&
+            honeyCount >= grandCelebrationCost.honeyCount &&
+            pomegranateCount >= grandCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= grandCelebrationCost.appleCount;
+            honeyCount -= grandCelebrationCost.honeyCount;
+            pomegranateCount -= grandCelebrationCost.pomegranateCount;
+            grandCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 2.5;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/grand_celebration.png')";
+
+            // Show notification
+            showNotification('Grand Celebration! Production increased significantly.');
+
+            // Unlock next celebration
+            unlockCelebration('epicCelebration');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Grand Celebration!');
+        }
+    }
+
+    function epicCelebration() {
+        if (
+            appleCount >= epicCelebrationCost.appleCount &&
+            honeyCount >= epicCelebrationCost.honeyCount &&
+            pomegranateCount >= epicCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= epicCelebrationCost.appleCount;
+            honeyCount -= epicCelebrationCost.honeyCount;
+            pomegranateCount -= epicCelebrationCost.pomegranateCount;
+            epicCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 3;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/epic_celebration.png')";
+
+            // Show notification
+            showNotification('Epic Celebration! Production tripled.');
+
+            // Unlock next celebration
+            unlockCelebration('cosmicCelebration');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Epic Celebration!');
+        }
+    }
+
+    function cosmicCelebration() {
+        if (
+            appleCount >= cosmicCelebrationCost.appleCount &&
+            honeyCount >= cosmicCelebrationCost.honeyCount &&
+            pomegranateCount >= cosmicCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= cosmicCelebrationCost.appleCount;
+            honeyCount -= cosmicCelebrationCost.honeyCount;
+            pomegranateCount -= cosmicCelebrationCost.pomegranateCount;
+            cosmicCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 4;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/cosmic_celebration.png')";
+
+            // Show notification
+            showNotification('Cosmic Celebration! Production quadrupled.');
+
+            // Unlock next celebration
+            unlockCelebration('intergalacticCelebration');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Cosmic Celebration!');
+        }
+    }
+
+    function intergalacticCelebration() {
+        if (
+            appleCount >= intergalacticCelebrationCost.appleCount &&
+            honeyCount >= intergalacticCelebrationCost.honeyCount &&
+            pomegranateCount >= intergalacticCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= intergalacticCelebrationCost.appleCount;
+            honeyCount -= intergalacticCelebrationCost.honeyCount;
+            pomegranateCount -= intergalacticCelebrationCost.pomegranateCount;
+            intergalacticCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 5;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/intergalactic_celebration.png')";
+
+            // Show notification
+            showNotification('Intergalactic Celebration! Production increased immensely.');
+
+            // Unlock next celebration
+            unlockCelebration('temporalCelebration');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Intergalactic Celebration!');
+        }
+    }
+
+    function temporalCelebration() {
+        if (
+            appleCount >= temporalCelebrationCost.appleCount &&
+            honeyCount >= temporalCelebrationCost.honeyCount &&
+            pomegranateCount >= temporalCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= temporalCelebrationCost.appleCount;
+            honeyCount -= temporalCelebrationCost.honeyCount;
+            pomegranateCount -= temporalCelebrationCost.pomegranateCount;
+            temporalCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 6;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/temporal_celebration.png')";
+
+            // Show notification
+            showNotification('Temporal Celebration! Production accelerated through time.');
+
+            // Unlock next celebration
+            unlockCelebration('celebrationSingularity');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Temporal Celebration!');
+        }
+    }
+
+    function celebrationSingularity() {
+        if (
+            appleCount >= celebrationSingularityCost.appleCount &&
+            honeyCount >= celebrationSingularityCost.honeyCount &&
+            pomegranateCount >= celebrationSingularityCost.pomegranateCount
+        ) {
+            appleCount -= celebrationSingularityCost.appleCount;
+            honeyCount -= celebrationSingularityCost.honeyCount;
+            pomegranateCount -= celebrationSingularityCost.pomegranateCount;
+            celebrationSingularityCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 8;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/celebration_singularity.png')";
+
+            // Show notification
+            showNotification('Celebration Singularity! Production transcended reality.');
+
+            // Unlock next celebration
+            unlockCelebration('infiniteCelebrationParadox');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Celebration Singularity!');
+        }
+    }
+
+    function infiniteCelebrationParadox() {
+        if (
+            appleCount >= infiniteCelebrationParadoxCost.appleCount &&
+            honeyCount >= infiniteCelebrationParadoxCost.honeyCount &&
+            pomegranateCount >= infiniteCelebrationParadoxCost.pomegranateCount
+        ) {
+            appleCount -= infiniteCelebrationParadoxCost.appleCount;
+            honeyCount -= infiniteCelebrationParadoxCost.honeyCount;
+            pomegranateCount -= infiniteCelebrationParadoxCost.pomegranateCount;
+            infiniteCelebrationParadoxCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 10;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/infinite_celebration_paradox.png')";
+
+            // Show notification
+            showNotification('Infinite Celebration Paradox! Production reached infinite levels.');
+
+            // Unlock next celebration
+            unlockCelebration('omniversalCelebration');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Infinite Celebration Paradox!');
+        }
+    }
+
+    function omniversalCelebration() {
+        if (
+            appleCount >= omniversalCelebrationCost.appleCount &&
+            honeyCount >= omniversalCelebrationCost.honeyCount &&
+            pomegranateCount >= omniversalCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= omniversalCelebrationCost.appleCount;
+            honeyCount -= omniversalCelebrationCost.honeyCount;
+            pomegranateCount -= omniversalCelebrationCost.pomegranateCount;
+            omniversalCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 12;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/omniversal_celebration.png')";
+
+            // Show notification
+            showNotification('Omniversal Celebration! Production now spans the omniverse.');
+
+            // Unlock next celebration
+            unlockCelebration('oneCelebration');
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for Omniversal Celebration!');
+        }
+    }
+
+    function oneCelebration() {
+        if (
+            appleCount >= oneCelebrationCost.appleCount &&
+            honeyCount >= oneCelebrationCost.honeyCount &&
+            pomegranateCount >= oneCelebrationCost.pomegranateCount
+        ) {
+            appleCount -= oneCelebrationCost.appleCount;
+            honeyCount -= oneCelebrationCost.honeyCount;
+            pomegranateCount -= oneCelebrationCost.pomegranateCount;
+            oneCelebrationCount++;
+
+            // Boost production multipliers
+            productionMultiplier *= 15;
+
+            // Change background image
+            gameArea.style.backgroundImage = "url('images/one_celebration.png')";
+
+            // Show notification
+            showNotification('One Celebration! Production has reached the pinnacle of existence.');
+
+            // Optionally, you can unlock further features or loop back
+            // For example, loop back to the first celebration or introduce new features
+
+            updateResources();
+        } else {
+            showNotification('Not enough resources for One Celebration!');
+        }
+    }
+
+    function unlockCelebration(celebrationType) {
+        var celebrationButton = document.createElement('button');
+        celebrationButton.onclick = window[celebrationType];
+        celebrationButton.innerText = celebrationType.replace(/([A-Z])/g, ' $1').trim().replace(/\b\w/g, l => l.toUpperCase());
+        
+        var costDiv = document.createElement('div');
+        costDiv.className = 'upgrade-cost';
+        
+        var costs = window[celebrationType + 'Cost'];
+        costDiv.innerHTML = 'Cost: ' + costs.appleCount + ' Apples, ' + costs.honeyCount + ' Honey, ' + costs.pomegranateCount + ' Pomegranates';
+        
+        var celebrationDiv = document.createElement('div');
+        celebrationDiv.className = 'upgrade-item';
+        celebrationDiv.id = celebrationType;
+        celebrationDiv.appendChild(celebrationButton);
+        celebrationDiv.appendChild(costDiv);
+        
+        document.getElementById('celebrationUpgrades').appendChild(celebrationDiv);
+    }
+
+    // Initial resource update
+    updateResources();
+
+    // Function to save the game state to localStorage
+    function saveGame() {
+      const gameState = {
+        // Resource Counts
+        appleCount,
+        honeyCount,
+        pomegranateCount,
+        shofarCount,
+
+        // Upgrade Counts
+        treeCount,
+        beehiveCount,
+        pomegranateTreeCount,
+        celebrationCount,
+        honeyedApplesCount,
+        goldenBeeCount,
+        megaChallahCount,
+
+        // Apple Upgrades
+        orchardCount,
+        appleFactoryCount,
+        appleSupplyChainCount,
+        appleEmpireCount,
+        appleMultiverseCount,
+        appleSingularityCount,
+        quantumAppleFacilityCount,
+        appleParadoxGeneratorCount,
+        interdimensionalAppleHypercubeCount,
+        cosmicAppleConsciousnessCount,
+        transcendentAppleOmniverseCount,
+
+        // Honey Upgrades
+        honeyFarmCount,
+        honeyProcessingPlantCount,
+        honeyCorporationCount,
+        honeyGalaxyCount,
+        honeyBlackHoleCount,
+        honeycombCollectorCount,
+        quantumHoneyReactorCount,
+        honeyTimeDilatorCount,
+        honeyverseCreatorCount,
+        honeySingularityMatrixCount,
+        infiniteHoneyContinuumCount,
+
+        // Pomegranate Upgrades
+        pomegranateGroveCount,
+        pomegranateDimensionExpanderCount,
+        quantumPomegranateColliderCount,
+        pomegranateRealityDistorterCount,
+        pomegranateMultiverseWeaverCount,
+
+        // Production Multipliers
+        productionMultiplier,
+        appleProductionMultiplier,
+        honeyProductionMultiplier,
+        pomegranateProductionMultiplier,
+
+        // Achievements
+        achievements,
+
+        // Celebration Counts
+        grandCelebrationCount,
+        epicCelebrationCount,
+        cosmicCelebrationCount,
+        intergalacticCelebrationCount,
+        temporalCelebrationCount,
+        celebrationSingularityCount,
+        infiniteCelebrationParadoxCount,
+        omniversalCelebrationCount,
+        oneCelebrationCount,
+        
+        // Add any additional variables here
+      };
+      localStorage.setItem('roshHashanahGameSave', JSON.stringify(gameState));
+      console.log('Game saved.');
+    }
+
+    // Load game state
+  function loadGame() {
+      const savedState = localStorage.getItem('roshHashanahGameSave');
+      if (savedState) {
+        const gameState = JSON.parse(savedState);
+        
+        // Resource Counts
+        appleCount = gameState.appleCount;
+        honeyCount = gameState.honeyCount;
+        pomegranateCount = gameState.pomegranateCount;
+        shofarCount = gameState.shofarCount;
+
+        // Upgrade Counts
+        treeCount = gameState.treeCount;
+        beehiveCount = gameState.beehiveCount;
+        pomegranateTreeCount = gameState.pomegranateTreeCount;
+        celebrationCount = gameState.celebrationCount;
+        honeyedApplesCount = gameState.honeyedApplesCount;
+        goldenBeeCount = gameState.goldenBeeCount;
+        megaChallahCount = gameState.megaChallahCount;
+
+        // Apple Upgrades
+        orchardCount = gameState.orchardCount;
+        appleFactoryCount = gameState.appleFactoryCount;
+        appleSupplyChainCount = gameState.appleSupplyChainCount;
+        appleEmpireCount = gameState.appleEmpireCount;
+        appleMultiverseCount = gameState.appleMultiverseCount;
+        appleSingularityCount = gameState.appleSingularityCount;
+        quantumAppleFacilityCount = gameState.quantumAppleFacilityCount;
+        appleParadoxGeneratorCount = gameState.appleParadoxGeneratorCount;
+        interdimensionalAppleHypercubeCount = gameState.interdimensionalAppleHypercubeCount;
+        cosmicAppleConsciousnessCount = gameState.cosmicAppleConsciousnessCount;
+        transcendentAppleOmniverseCount = gameState.transcendentAppleOmniverseCount;
+
+        // Honey Upgrades
+        honeyFarmCount = gameState.honeyFarmCount;
+        honeyProcessingPlantCount = gameState.honeyProcessingPlantCount;
+        honeyCorporationCount = gameState.honeyCorporationCount;
+        honeyGalaxyCount = gameState.honeyGalaxyCount;
+        honeyBlackHoleCount = gameState.honeyBlackHoleCount;
+        honeycombCollectorCount = gameState.honeycombCollectorCount;
+        quantumHoneyReactorCount = gameState.quantumHoneyReactorCount;
+        honeyTimeDilatorCount = gameState.honeyTimeDilatorCount;
+        honeyverseCreatorCount = gameState.honeyverseCreatorCount;
+        honeySingularityMatrixCount = gameState.honeySingularityMatrixCount;
+        infiniteHoneyContinuumCount = gameState.infiniteHoneyContinuumCount;
+
+        // Pomegranate Upgrades
+        pomegranateGroveCount = gameState.pomegranateGroveCount;
+        pomegranateDimensionExpanderCount = gameState.pomegranateDimensionExpanderCount;
+        quantumPomegranateColliderCount = gameState.quantumPomegranateColliderCount;
+        pomegranateRealityDistorterCount = gameState.pomegranateRealityDistorterCount;
+        pomegranateMultiverseWeaverCount = gameState.pomegranateMultiverseWeaverCount;
+
+        // Production Multipliers
+        productionMultiplier = gameState.productionMultiplier;
+        appleProductionMultiplier = gameState.appleProductionMultiplier;
+        honeyProductionMultiplier = gameState.honeyProductionMultiplier;
+        pomegranateProductionMultiplier = gameState.pomegranateProductionMultiplier;
+
+        // Achievements
+        achievements = gameState.achievements || [];
+
+        // Celebration Counts
+        grandCelebrationCount = gameState.grandCelebrationCount;
+        epicCelebrationCount = gameState.epicCelebrationCount;
+        cosmicCelebrationCount = gameState.cosmicCelebrationCount;
+        intergalacticCelebrationCount = gameState.intergalacticCelebrationCount;
+        temporalCelebrationCount = gameState.temporalCelebrationCount;
+        celebrationSingularityCount = gameState.celebrationSingularityCount;
+        infiniteCelebrationParadoxCount = gameState.infiniteCelebrationParadoxCount;
+        omniversalCelebrationCount = gameState.omniversalCelebrationCount;
+        oneCelebrationCount = gameState.oneCelebrationCount;
+
+        // Unlock upgrades based on loaded counts
+        // Apple Upgrades
+        if (treeCount > 5) unlockUpgrade('orchard', 'appleUpgrades');
+        if (orchardCount > 0) unlockUpgrade('appleFactory', 'appleUpgrades');
+        if (appleFactoryCount > 0) unlockUpgrade('appleSupplyChain', 'appleUpgrades');
+        if (appleSupplyChainCount > 0) unlockUpgrade('appleEmpire', 'appleUpgrades');
+        if (appleEmpireCount > 0) unlockUpgrade('appleMultiverse', 'appleUpgrades');
+        if (appleMultiverseCount > 0) unlockUpgrade('appleSingularity', 'appleUpgrades');
+        if (appleSingularityCount > 0) unlockUpgrade('quantumAppleFacility', 'appleUpgrades');
+        if (quantumAppleFacilityCount > 0) unlockUpgrade('appleParadoxGenerator', 'appleUpgrades');
+        if (appleParadoxGeneratorCount > 0) unlockUpgrade('interdimensionalAppleHypercube', 'appleUpgrades');
+        if (interdimensionalAppleHypercubeCount > 0) unlockUpgrade('cosmicAppleConsciousness', 'appleUpgrades');
+        if (cosmicAppleConsciousnessCount > 0) unlockUpgrade('transcendentAppleOmniverse', 'appleUpgrades');
+
+        // Honey Upgrades
+        if (beehiveCount > 0) unlockUpgrade('honeyFarm', 'honeyUpgrades');
+        if (honeyFarmCount > 0) unlockUpgrade('honeyProcessingPlant', 'honeyUpgrades');
+        if (honeyProcessingPlantCount > 0) unlockUpgrade('honeyCorporation', 'honeyUpgrades');
+        if (honeyCorporationCount > 0) unlockUpgrade('honeycombCollector', 'honeyUpgrades');
+        if (honeycombCollectorCount > 0) unlockUpgrade('quantumHoneyReactor', 'honeyUpgrades');
+        if (quantumHoneyReactorCount > 0) unlockUpgrade('honeyGalaxy', 'honeyUpgrades');
+        if (honeyGalaxyCount > 0) unlockUpgrade('honeyTimeDilator', 'honeyUpgrades');
+        if (honeyTimeDilatorCount > 0) unlockUpgrade('honeyBlackHole', 'honeyUpgrades');
+        if (honeyBlackHoleCount > 0) unlockUpgrade('honeyverseCreator', 'honeyUpgrades');
+        if (honeyverseCreatorCount > 0) unlockUpgrade('honeySingularityMatrix', 'honeyUpgrades');
+        if (honeySingularityMatrixCount > 0) unlockUpgrade('infiniteHoneyContinuum', 'honeyUpgrades');
+
+        // Pomegranate Upgrades
+        if (pomegranateTreeCount > 0) unlockUpgrade('pomegranateGrove', 'pomegranateUpgrades');
+        if (pomegranateGroveCount > 0) unlockUpgrade('pomegranateDimensionExpander', 'pomegranateUpgrades');
+        if (pomegranateDimensionExpanderCount > 0) unlockUpgrade('quantumPomegranateCollider', 'pomegranateUpgrades');
+        if (quantumPomegranateColliderCount > 0) unlockUpgrade('pomegranateRealityDistorter', 'pomegranateUpgrades');
+        if (pomegranateRealityDistorterCount > 0) unlockUpgrade('pomegranateMultiverseWeaver', 'pomegranateUpgrades');
+
+        // Celebration Upgrades
+        if (celebrationCount > 0) unlockCelebration('grandCelebration');
+        if (grandCelebrationCount > 0) unlockCelebration('epicCelebration');
+        if (epicCelebrationCount > 0) unlockCelebration('cosmicCelebration');
+        if (cosmicCelebrationCount > 0) unlockCelebration('intergalacticCelebration');
+        if (intergalacticCelebrationCount > 0) unlockCelebration('temporalCelebration');
+        if (temporalCelebrationCount > 0) unlockCelebration('celebrationSingularity');
+        if (celebrationSingularityCount > 0) unlockCelebration('infiniteCelebrationParadox');
+        if (infiniteCelebrationParadoxCount > 0) unlockCelebration('omniversalCelebration');
+        if (omniversalCelebrationCount > 0) unlockCelebration('oneCelebration');
+
+            // Clear existing visuals
+        clearGameArea();
+
+        // Reload visual elements
+        for (let i = 0; i < treeCount; i++) {
+          addTreeImage();
+        }
+        for (let i = 0; i < beehiveCount; i++) {
+          addBeehiveImage();
+        }
+        for (let i = 0; i < pomegranateTreeCount; i++) {
+          addPomegranateTreeImage();
+        }
+        for (let i = 0; i < goldenBeeCount; i++) {
+          addGoldenBeeImage();
+        }
+
+        setBackgroundImage();
+
+        updateResources();
+        console.log('Game loaded.');
+      }
+    }
+
+    function setBackgroundImage() {
+      const gameArea = document.getElementById('game-area');
+      
+      // Apple Upgrades
+      if (transcendentAppleOmniverseCount > 0) {
+        gameArea.style.backgroundImage = "url('images/transcendent_apple_omniverse.png')";
+      } else if (cosmicAppleConsciousnessCount > 0) {
+        gameArea.style.backgroundImage = "url('images/cosmic_apple_consciousness.png')";
+      } else if (interdimensionalAppleHypercubeCount > 0) {
+        gameArea.style.backgroundImage = "url('images/interdimensional_apple_hypercube.png')";
+      } else if (appleParadoxGeneratorCount > 0) {
+        gameArea.style.backgroundImage = "url('images/apple_paradox_generator.png')";
+      } else if (quantumAppleFacilityCount > 0) {
+        gameArea.style.backgroundImage = "url('images/quantum_apple_facility.png')";
+      } else if (appleSingularityCount > 0) {
+        gameArea.style.backgroundImage = "url('images/apple_singularity.png')";
+      } else if (appleMultiverseCount > 0) {
+        gameArea.style.backgroundImage = "url('images/apple_multiverse.png')";
+      } else if (appleEmpireCount > 0) {
+        gameArea.style.backgroundImage = "url('images/apple_empire.png')";
+      } else if (appleSupplyChainCount > 0) {
+        gameArea.style.backgroundImage = "url('images/apple_supply_chain.png')";
+      } else if (appleFactoryCount > 0) {
+        gameArea.style.backgroundImage = "url('images/apple_factory.png')";
+      } else if (orchardCount > 0) {
+        gameArea.style.backgroundImage = "url('images/orchard.png')";
+      }
+      // Honey Upgrades
+      else if (infiniteHoneyContinuumCount > 0) {
+        gameArea.style.backgroundImage = "url('images/infinite_honey_continuum.png')";
+      } else if (honeySingularityMatrixCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_singularity_matrix.png')";
+      } else if (honeyverseCreatorCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honeyverse_creator.png')";
+      } else if (honeyBlackHoleCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_black_hole.png')";
+      } else if (honeyTimeDilatorCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_time_dilator.png')";
+      } else if (honeyGalaxyCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_galaxy.png')";
+      } else if (quantumHoneyReactorCount > 0) {
+        gameArea.style.backgroundImage = "url('images/quantum_honey_reactor.png')";
+      } else if (honeycombCollectorCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honeycomb_collector.png')";
+      } else if (honeyCorporationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_corporation.png')";
+      } else if (honeyProcessingPlantCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_processing_plant.png')";
+      } else if (honeyFarmCount > 0) {
+        gameArea.style.backgroundImage = "url('images/honey_farm.png')";
+      }
+      // Pomegranate Upgrades
+      else if (pomegranateMultiverseWeaverCount > 0) {
+        gameArea.style.backgroundImage = "url('images/pomegranate_multiverse_weaver.png')";
+      } else if (pomegranateRealityDistorterCount > 0) {
+        gameArea.style.backgroundImage = "url('images/pomegranate_reality_distorter.png')";
+      } else if (quantumPomegranateColliderCount > 0) {
+        gameArea.style.backgroundImage = "url('images/quantum_pomegranate_collider.png')";
+      } else if (pomegranateDimensionExpanderCount > 0) {
+        gameArea.style.backgroundImage = "url('images/pomegranate_dimension_expander.png')";
+      } else if (pomegranateGroveCount > 0) {
+        gameArea.style.backgroundImage = "url('images/pomegranate_grove.png')";
+      }
+      // Celebration Backgrounds
+      else if (oneCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/one_celebration.png')";
+      } else if (omniversalCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/omniversal_celebration.png')";
+      } else if (infiniteCelebrationParadoxCount > 0) {
+        gameArea.style.backgroundImage = "url('images/infinite_celebration_paradox.png')";
+      } else if (celebrationSingularityCount > 0) {
+        gameArea.style.backgroundImage = "url('images/celebration_singularity.png')";
+      } else if (temporalCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/temporal_celebration.png')";
+      } else if (intergalacticCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/intergalactic_celebration.png')";
+      } else if (cosmicCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/cosmic_celebration.png')";
+      } else if (epicCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/epic_celebration.png')";
+      } else if (grandCelebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/grand_celebration.png')";
+      } else if (celebrationCount > 0) {
+        gameArea.style.backgroundImage = "url('images/celebration.png')";
+      }
+      // Default background
+      else {
+        gameArea.style.backgroundImage = "url('images/gamebg.png')";
+      }
+    }
+
+    function unlockUpgrade(upgradeName, parentDivId) {
+      var parentDiv = document.getElementById(parentDivId);
+      var upgradeDiv = document.createElement('div');
+      upgradeDiv.className = 'upgrade-item';
+      upgradeDiv.id = upgradeName;
+
+      switch(upgradeName) {
+        // Apple Upgrades
+        // case 'tree':
+        //   upgradeDiv.innerHTML = `
+        //     <button onclick="buyUpgrade('tree')">Plant Apple Tree 🌳</button>
+        //     <div>Produces apples over time.</div>
+        //     <div class="upgrade-cost">Cost: <span id="treeCost">50</span> Apples</div>
+        //   `;
+        //   break;
+        case 'orchard':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('orchard')">Start Orchard 🏡</button>
+            <div>Boosts apple trees' output.</div>
+            <div class="upgrade-cost">Cost: <span id="orchardCost">500</span> Apples, <span id="orchardHoneyCost">50</span> Honey</div>
+          `;
+          break;
+        case 'appleFactory':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('appleFactory')">Build Apple Factory 🏭</button>
+            <div>Mass-produces apples efficiently.</div>
+            <div class="upgrade-cost">Cost: <span id="appleFactoryCost">2000</span> Apples, <span id="appleFactoryHoneyCost">200</span> Honey</div>
+          `;
+          break;
+        case 'appleSupplyChain':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('appleSupplyChain')">Establish Apple Supply Chain 🚚</button>
+            <div>Optimizes apple distribution.</div>
+            <div class="upgrade-cost">Cost: <span id="appleSupplyChainCost">5000</span> Apples, <span id="appleSupplyChainHoneyCost">500</span> Honey</div>
+          `;
+          break;
+        case 'appleEmpire':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('appleEmpire')">Build Apple Empire 🏰</button>
+            <div>Dominates the apple industry.</div>
+            <div class="upgrade-cost">Cost: <span id="appleEmpireCost">10000</span> Apples, <span id="appleEmpireHoneyCost">1000</span> Honey</div>
+          `;
+          break;
+        case 'appleMultiverse':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('appleMultiverse')">Unlock Apple Multiverse 🌌</button>
+            <div>Harvest apples across dimensions.</div>
+            <div class="upgrade-cost">Cost: <span id="appleMultiverseCost">50000</span> Apples, <span id="appleMultiverseHoneyCost">5000</span> Honey</div>
+          `;
+          break;
+        case 'appleSingularity':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('appleSingularity')">Achieve Apple Singularity 🌀</button>
+            <div>Apple production transcends reality.</div>
+            <div class="upgrade-cost">Cost: <span id="appleSingularityCost">100000</span> Apples, <span id="appleSingularityHoneyCost">10000</span> Honey</div>
+          `;
+          break;
+        case 'quantumAppleFacility':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('quantumAppleFacility')">Build Quantum Apple Facility ⚛️</button>
+            <div>Manipulates apples at quantum levels.</div>
+            <div class="upgrade-cost">Cost: <span id="quantumAppleFacilityCost">500000</span> Apples, <span id="quantumAppleFacilityHoneyCost">50000</span> Honey</div>
+          `;
+          break;
+        case 'appleParadoxGenerator':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('appleParadoxGenerator')">Activate Apple Paradox Generator 🌀🍎</button>
+            <div>Generates apples through temporal paradoxes.</div>
+            <div class="upgrade-cost">Cost: <span id="appleParadoxGeneratorCost">1000000</span> Apples, <span id="appleParadoxGeneratorHoneyCost">100000</span> Honey</div>
+          `;
+          break;
+
+        // Honey Upgrades
+        case 'beehive':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('beehive')">Build Beehive 🐝🏠</button>
+            <div>Produces honey over time.</div>
+            <div class="upgrade-cost">Cost: <span id="beehiveCost">100</span> Apples</div>
+          `;
+          break;
+        case 'honeyFarm':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyFarm')">Establish Honey Farm 🍯🌾</button>
+            <div>Boosts honey production significantly.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyFarmCost">500</span> Honey, <span id="honeyFarmAppleCost">250</span> Apples</div>
+          `;
+          break;
+        case 'honeyProcessingPlant':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyProcessingPlant')">Build Honey Processing Plant 🏭🍯</button>
+            <div>Processes honey more efficiently.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyProcessingPlantCost">2000</span> Honey, <span id="honeyProcessingPlantAppleCost">1000</span> Apples</div>
+          `;
+          break;
+        case 'honeyCorporation':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyCorporation')">Start Honey Corporation 🏢🍯</button>
+            <div>Mass-produces honey.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyCorporationCost">5000</span> Honey, <span id="honeyCorporationAppleCost">2500</span> Apples</div>
+          `;
+          break;
+        case 'honeycombCollector':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeycombCollector')">Deploy Honeycomb Collector 🍯✨</button>
+            <div>Harvests honey from alternate realities.</div>
+            <div class="upgrade-cost">Cost: <span id="honeycombCollectorCost">1000</span> Honey, <span id="honeycombCollectorAppleCost">500</span> Apples</div>
+          `;
+          break;
+        case 'quantumHoneyReactor':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('quantumHoneyReactor')">Activate Quantum Honey Reactor ⚛️🍯</button>
+            <div>Generates honey through quantum fluctuations.</div>
+            <div class="upgrade-cost">Cost: <span id="quantumHoneyReactorCost">5000</span> Honey, <span id="quantumHoneyReactorAppleCost">2000</span> Apples</div>
+          `;
+          break;
+        case 'honeyGalaxy':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyGalaxy')">Explore Honey Galaxy 🌌🍯</button>
+            <div>Harvests honey from the galaxy.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyGalaxyCost">10000</span> Honey, <span id="honeyGalaxyAppleCost">5000</span> Apples</div>
+          `;
+          break;
+        case 'honeyTimeDilator':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyTimeDilator')">Engage Honey Time Dilator ⏳🍯</button>
+            <div>Accelerates honey production by bending time.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyTimeDilatorCost">20000</span> Honey, <span id="honeyTimeDilatorAppleCost">8000</span> Apples</div>
+          `;
+          break;
+        case 'honeyBlackHole':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyBlackHole')">Open Honey Black Hole 🕳️🍯</button>
+            <div>Generates honey infinitely.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyBlackHoleCost">50000</span> Honey, <span id="honeyBlackHoleAppleCost">25000</span> Apples</div>
+          `;
+          break;
+        case 'honeyverseCreator':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeyverseCreator')">Instantiate Honeyverse Creator 🌌🍯</button>
+            <div>Creates entire universes made of honey.</div>
+            <div class="upgrade-cost">Cost: <span id="honeyverseCreatorCost">50000</span> Honey, <span id="honeyverseCreatorAppleCost">20000</span> Apples</div>
+          `;
+          break;
+        case 'honeySingularityMatrix':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('honeySingularityMatrix')">Deploy Honey Singularity Matrix 🌀🍯</button>
+            <div>Rewrites the laws of physics for honey.</div>
+            <div class="upgrade-cost">Cost: <span id="honeySingularityMatrixCost">100000</span> Honey, <span id="honeySingularityMatrixAppleCost">50000</span> Apples</div>
+          `;
+          break;
+        case 'infiniteHoneyContinuum':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('infiniteHoneyContinuum')">Achieve Infinite Honey Continuum ♾️🍯</button>
+            <div>Honey production becomes limitless.</div>
+            <div class="upgrade-cost">Cost: <span id="infiniteHoneyContinuumCost">500000</span> Honey, <span id="infiniteHoneyContinuumAppleCost">250000</span> Apples</div>
+          `;
+          break;
+
+        // Pomegranate Upgrades
+        case 'pomegranateTree':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('pomegranateTree')">Plant Pomegranate Tree 🌳🍇</button>
+            <div>Produces pomegranates over time.</div>
+            <div class="upgrade-cost">Cost: <span id="pomegranateTreeCost">100</span> Honey</div>
+          `;
+          break;
+        case 'pomegranateGrove':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('pomegranateGrove')">Cultivate Pomegranate Grove 🌳🌳🍇</button>
+            <div>Boosts pomegranate production significantly.</div>
+            <div class="upgrade-cost">Cost: <span id="pomegranateGroveCost">500</span> Pomegranates, <span id="pomegranateGroveHoneyCost">250</span> Honey</div>
+          `;
+          break;
+        case 'pomegranateDimensionExpander':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('pomegranateDimensionExpander')">Expand Pomegranate Dimensions 🌌🍇</button>
+            <div>Accesses higher dimensions for pomegranate growth.</div>
+            <div class="upgrade-cost">Cost: <span id="pomegranateDimensionExpanderCost">1000</span> Pomegranates, <span id="pomegranateDimensionExpanderHoneyCost">500</span> Honey</div>
+          `;
+          break;
+        case 'quantumPomegranateCollider':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('quantumPomegranateCollider')">Build Quantum Pomegranate Collider ⚛️🍇</button>
+            <div>Collides pomegranates at quantum levels to create more.</div>
+            <div class="upgrade-cost">Cost: <span id="quantumPomegranateColliderCost">5000</span> Pomegranates, <span id="quantumPomegranateColliderHoneyCost">2000</span> Honey</div>
+          `;
+          break;
+        case 'pomegranateRealityDistorter':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('pomegranateRealityDistorter')">Initiate Pomegranate Reality Distorter 🌀🍇</button>
+            <div>Distorts reality to spawn pomegranates endlessly.</div>
+            <div class="upgrade-cost">Cost: <span id="pomegranateRealityDistorterCost">20000</span> Pomegranates, <span id="pomegranateRealityDistorterHoneyCost">8000</span> Honey</div>
+          `;
+          break;
+        case 'pomegranateMultiverseWeaver':
+          upgradeDiv.innerHTML = `
+            <button onclick="buyUpgrade('pomegranateMultiverseWeaver')">Activate Pomegranate Multiverse Weaver 🌌🍇</button>
+            <div>Weaves pomegranate-rich universes into existence.</div>
+            <div class="upgrade-cost">Cost: <span id="pomegranateMultiverseWeaverCost">50000</span> Pomegranates, <span id="pomegranateMultiverseWeaverHoneyCost">20000</span> Honey</div>
+          `;
+          break;
+
+        default:
+          console.error("Unknown upgrade: " + upgradeName);
+          return; // Exit the function if unknown upgrade
+      }
+
+      parentDiv.appendChild(upgradeDiv);
+        // Game Intervals
+    }
+
+    // Function to reset the game
+  function resetGame() {
+    // Confirm with the user before resetting
+    if (confirm("Are you sure you want to reset the game? All progress will be lost.")) {
+      
+      // Clear all resource variables
+      appleCount = 0;
+      honeyCount = 0;
+      pomegranateCount = 0;
+      shofarCount = 0;
+
+      // Reset Upgrade Counts
+      treeCount = 0;
+      beehiveCount = 0;
+      pomegranateTreeCount = 0;
+      honeyedApplesCount = 0;
+      goldenBeeCount = 0;
+      megaChallahCount = 0;
+
+      orchardCount = 0;
+      appleFactoryCount = 0;
+      appleSupplyChainCount = 0;
+      appleEmpireCount = 0;
+      appleMultiverseCount = 0;
+      appleSingularityCount = 0;
+      quantumAppleFacilityCount = 0;
+      appleParadoxGeneratorCount = 0;
+      interdimensionalAppleHypercubeCount = 0;
+      cosmicAppleConsciousnessCount = 0;
+      transcendentAppleOmniverseCount = 0;
+
+      honeyFarmCount = 0;
+      honeyProcessingPlantCount = 0;
+      honeyCorporationCount = 0;
+      honeyGalaxyCount = 0;
+      honeyBlackHoleCount = 0;
+      honeycombCollectorCount = 0;
+      quantumHoneyReactorCount = 0;
+      honeyTimeDilatorCount = 0;
+      honeyverseCreatorCount = 0;
+      honeySingularityMatrixCount = 0;
+      infiniteHoneyContinuumCount = 0;
+
+      pomegranateGroveCount = 0;
+      pomegranateDimensionExpanderCount = 0;
+      quantumPomegranateColliderCount = 0;
+      pomegranateRealityDistorterCount = 0;
+      pomegranateMultiverseWeaverCount = 0;
+
+      // Reset Production Multipliers
+      productionMultiplier = 1;
+      appleProductionMultiplier = 1;
+      honeyProductionMultiplier = 1;
+      pomegranateProductionMultiplier = 1;
+
+      // Reset Achievement List
+      achievements = [];
+      document.getElementById('achievements').innerText = 'None yet.';
+
+      // Reset Celebration Counts
+      grandCelebrationCount = 0;
+      epicCelebrationCount = 0;
+      cosmicCelebrationCount = 0;
+      intergalacticCelebrationCount = 0;
+      temporalCelebrationCount = 0;
+      celebrationSingularityCount = 0;
+      infiniteCelebrationParadoxCount = 0;
+      omniversalCelebrationCount = 0;
+      oneCelebrationCount = 0;
+
+      // Clear Game Area of All Images and Elements
+      while (gameArea.firstChild) {
+        gameArea.removeChild(gameArea.firstChild);
+      }
+
+      // Reset Upgrade Sections to Initial State
+      document.getElementById('appleUpgrades').innerHTML = `
+        <div class="upgrade-item" id="tree">
+          <button onclick="buyUpgrade('tree')">Plant Apple Tree 🌳</button>
+          <div>Grows apples over time.</div>
+          <div class="upgrade-cost">Cost: <span id="treeCost">25</span> Apples</div>
+        </div>
+      `;
+
+      document.getElementById('honeyUpgrades').innerHTML = `
+        <div class="upgrade-item" id="beehive">
+          <button onclick="buyUpgrade('beehive')">Build Beehive 🐝</button>
+          <div>Produces honey from apples.</div>
+          <div class="upgrade-cost">Cost: <span id="beehiveCost">50</span> Apples</div>
+        </div>
+      `;
+
+      document.getElementById('pomegranateUpgrades').innerHTML = `
+        <div class="upgrade-item" id="pomegranateTree">
+          <button onclick="buyUpgrade('pomegranateTree')">Plant Pomegranate Tree 🍇🌳</button>
+          <div>Produces pomegranates over time.</div>
+          <div class="upgrade-cost">Cost: <span id="pomegranateTreeCost">75</span> Honey</div>
+        </div>
+      `;
+
+      // Reset Celebration Upgrades Section to Initial State
+      document.getElementById('celebrationUpgrades').innerHTML = `
+        <!-- Rosh Hashanah Celebration -->
+        <button onclick="celebrate()">Celebrate Rosh Hashanah! 🎉</button>
+        <div>Boosts all production significantly.</div>
+        <div class="upgrade-cost">Cost: 1000 Apples, 500 Honey, 100 Pomegranates</div>
+      `;
+
+      // Clear Local Storage
+      localStorage.removeItem('roshHashanahGameSave');
+
+      // Update Resource Display
+      updateResources();
+
+      // Optionally, stop any active intervals (if necessary)
+      // Example:
+      // clearInterval(resourceInterval);
+      // clearInterval(appleInterval);
+
+      alert("Game has been reset!");
+
+      console.log('Game has been successfully reset.');
+    }
+  }
+
+  function clearGameArea() {
+    const gameArea = document.getElementById('game-area');
+    while (gameArea.firstChild) {
+      gameArea.removeChild(gameArea.firstChild);
+    }
+  }
+  var appleInterval = setInterval(createFallingApple, 5000); // Apples fall every 5 seconds
+  var resourceInterval = setInterval(generateResources, 1000); // Generate resources every second
+
+      // Initial resource update
+  updateResources();
+    window.onload = function() {
+    loadGame();
+    setInterval(saveGame, 5000); // Save every 5 seconds
+    console.log('Game has been successfully saved.');
+  }
+  </script>
+</body>
+</html>
