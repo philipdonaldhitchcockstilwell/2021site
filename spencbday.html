@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🎉 Spencer's Birthday Mall Walk Simulator 🎂</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            background-color: #ffe6f0;
+            background-image: url('https://i.imgur.com/8Iu0ZQj.png'); /* Example confetti image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff4081;
+            text-shadow: 2px 2px #ff80ab;
+            margin-top: 20px;
+        }
+
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        #time {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #ff4081;
+            font-weight: bold;
+        }
+
+        #map {
+            display: grid;
+            grid-template-rows: repeat(7, 60px); /* 7 rows to include Parking Lot */
+            grid-template-columns: repeat(10, 60px);
+            gap: 4px;
+            margin-bottom: 20px;
+            background-color: #e6e6e6;
+            padding: 10px;
+            border: 3px dashed #ff4081;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #ff80ab;
+            position: relative;
+            background-color: #fff0f5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .cell:hover {
+            background-color: #ffe6f0;
+            transform: scale(1.05);
+        }
+
+        .cell.active {
+            background-color: #ff80ab;
+            animation: pulse 1s infinite;
+        }
+
+        /* Flash Blue Animation */
+        .flash-blue {
+            animation: flashBlue 0.5s;
+        }
+
+        @keyframes flashBlue {
+            0% { background-color: #fff0f5; }
+            50% { background-color: #87CEFA; } /* Light Blue */
+            100% { background-color: #fff0f5; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px #ff4081; }
+            50% { box-shadow: 0 0 20px #ff4081; }
+            100% { box-shadow: 0 0 10px #ff4081; }
+        }
+
+        .cell-id {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            color: #555;
+        }
+
+        #controls {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff4081;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px #c51162;
+        }
+
+        button:hover {
+            background-color: #e73370;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #c51162;
+            box-shadow: 0 2px #a0003f;
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+            max-width: 600px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        /* Directory Modal Styles */
+        #directory-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff0f5;
+            border: 3px solid #ff4081;
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+            width: 350px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        #directory-modal h2 {
+            margin-top: 0;
+            font-family: 'Pacifico', cursive;
+            color: #ff4081;
+            text-shadow: 1px 1px #ff80ab;
+        }
+
+        #directory-modal ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        #directory-modal li {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #ffe6f0;
+            border-radius: 5px;
+            box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+        }
+
+        #directory-modal button {
+            margin-top: 10px;
+            background-color: #ff80ab;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 182, 193, 0.7);
+            display: none;
+            z-index: 500;
+        }
+
+        /* Confetti Animation */
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: absolute;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #ff4081;
+            animation: confetti-fall linear;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+        }
+
+        .completed {
+    background-color: #87CEFA; /* Light Blue */
+}
+
+        /* Different confetti colors */
+        .confetti:nth-child(2n) { background-color: #ff80ab; }
+        .confetti:nth-child(3n) { background-color: #ffb3c6; }
+        .confetti:nth-child(4n) { background-color: #ffe6f0; }
+    </style>
+</head>
+<body>
+
+<!-- Confetti Elements -->
+<div id="confetti-container">
+    <div class="confetti" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="confetti" style="left: 20%; animation-delay: 1s;"></div>
+    <div class="confetti" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="confetti" style="left: 40%; animation-delay: 3s;"></div>
+    <div class="confetti" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="confetti" style="left: 60%; animation-delay: 5s;"></div>
+    <div class="confetti" style="left: 70%; animation-delay: 6s;"></div>
+    <div class="confetti" style="left: 80%; animation-delay: 7s;"></div>
+    <div class="confetti" style="left: 90%; animation-delay: 8s;"></div>
+</div>
+
+<div id="game-container">
+    <h1>🎉 Spencer's Birthday Mall Walk Simulator 🎂</h1>
+    <div id="time">🕑 Time: 2:00 PM</div>
+    <div id="map"></div>
+    <div id="controls">
+        <button onclick="move('up')" id="up-btn">⬆️ Up</button>
+        <button onclick="move('left')" id="left-btn">⬅️ Left</button>
+        <button onclick="move('down')" id="down-btn">⬇️ Down</button>
+        <button onclick="move('right')" id="right-btn">➡️ Right</button>
+        <button onclick="showDirectory()" id="directory-btn">📂 Directory</button>
+    </div>
+    <div id="status">🎈 Welcome Spencer! Start at the Parking Lot. 🎈</div>
+</div>
+
+<!-- Directory Modal -->
+<div id="overlay" onclick="closeDirectory()"></div>
+<div id="directory-modal">
+    <h2>Mall Directory</h2>
+    <ul id="directory-list">
+        <!-- Populated by JS -->
+    </ul>
+    <button onclick="closeDirectory()">Close</button>
+</div>
+
+<!-- Audio Elements -->
+<audio id="birthday-audio" src="sound/birthdayspenc.mp3" preload="auto"></audio>
+<audio id="complete-audio" src="sound/complete.mp3" preload="auto"></audio> <!-- New Audio Element -->
+<audio id="win-audio" src="sound/win.mp3" preload="auto"></audio>
+<audio id="lose-audio" src="sound/lose.mp3" preload="auto"></audio> <!-- New Lose Audio Element -->
+<script>
+    // Define the mall map
+    const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G']; // G row for Parking Lot
+    const cols = ['1','2','3','4','5','6','7','8','9','10'];
+    const mapElement = document.getElementById('map');
+
+    // Define store locations
+    const stores = {
+        // Fake Stores
+        'Spencer Gifts': 'A1',
+        'ElectroMart': 'B2',
+        'Fashionista': 'C5',
+        'Book Haven': 'D5',
+        'Uncle Tetsu’s Cheesecake': 'D3',
+        'TechWorld': 'E2',
+        'Shoe Palace': 'F4',
+        'Jewelry Corner': 'A7',
+        'Toy Land': 'C3',
+        'Beauty Bliss': 'D8',
+        'Sport Center': 'E5',
+        'Pet Paradise': 'B9',
+        'Gadget Galaxy': 'B4',
+        'Home Comforts': 'C6',
+        'Candy Corner': 'D2',
+        'Kids Kingdom': 'E7',
+        'Artistic Expressions': 'F6',
+        'Health Hub': 'A5',
+        'Roof': 'F3',
+        'Music Mania': 'B6',
+        'Food Court': 'C8',
+        'Garden Glory': 'C1',
+        'Cinema Center': 'D7',
+        'Parking Lot': 'G1',
+        'Mobile Mania': 'E9',
+        'Vintage Vault': 'F1',
+        'Dance Depot': 'A3',
+        'Snack Shack': 'B8',
+        'Gourmet Goods': 'C4',
+        'Lucky Lanes': 'D4',
+        'Electric Emporium': 'E3',
+        'Crystal Clear': 'F5',
+        'Lamp Lounge': 'A9',
+        'Nail Nook': 'B1',
+        'Photo Phactory': 'C7',
+        'Quick Quarters': 'D6',
+        'Retro Room': 'E4',
+        'Sunshine Spa': 'F10',
+        'Hotpot Restaurant': 'E8',
+        'Travel Treasures': 'A2',
+        'Urban Outfitters': 'B5',
+        'Smoothie Station': 'A4',
+        'David Buster’s': 'A10',
+        'Zen Zone': 'A6',
+        'Fitness First': 'A8',
+        'Comic Cave': 'B3',
+        'Denim Den': 'B7',
+        'Eco Essentials': 'B10',
+        'Fragrance Factory': 'C2',
+        'Game Grotto': 'C9',
+        'Hat Haven': 'C10',
+    };
+
+    // Initialize the map grid with cell identifiers
+    for(let r=0; r<rows.length; r++) {
+        for(let c=0; c<cols.length; c++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.id = rows[r] + cols[c];
+
+            // Add cell identifier
+            const cellId = document.createElement('div');
+            cellId.classList.add('cell-id');
+            cellId.innerText = cell.id;
+            cell.appendChild(cellId);
+
+            // Optional: Add store names as tooltips
+            for(let store in stores) {
+                if(stores[store] === cell.id) {
+                    cell.title = store;
+                    break;
+                }
+            }
+
+            mapElement.appendChild(cell);
+        }
+    }
+
+    // Initialize player's position at Parking Lot
+    let currentPosition = stores['Parking Lot'];
+    let currentTask = 1;
+    let mallWalkSteps = 0;
+    let gameOver = false;
+    let timerStarted = false;
+    updateMap();
+    updateStatus();
+
+    // Audio Elements
+    const birthdayAudio = document.getElementById('birthday-audio');
+    const completeAudio = document.getElementById('complete-audio'); // Existing Audio Element
+    const winAudio = document.getElementById('win-audio'); // New Win Audio Element
+    const loseAudio = document.getElementById('lose-audio'); // New Lose Audio Element
+
+    // Update the map to show player's current position
+    function updateMap() {
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.classList.remove('active');
+        });
+        const currentCell = document.getElementById(currentPosition);
+        if(currentCell) currentCell.classList.add('active');
+    }
+
+    // Update the status message
+    function updateStatus(message) {
+        const status = document.getElementById('status');
+        if(message) {
+            status.innerText = message;
+        } else {
+            // Default status based on current task
+            switch(currentTask) {
+                case 1:
+                    status.innerText = '🎯 Task 1: You are at the Parking Lot. Open the Directory to find the location of David Buster’s.';
+                    break;
+                case 2:
+                    status.innerText = '🎯 Task 2: You have reached David Buster’s. Time for some drinks on the Roof.';
+                    break;
+                case 3:
+                    status.innerText = '🎯 Task 3: Yummmm. Let\'s sample the Food Court.';
+                    break;
+                case 4:
+                    status.innerText = '🎯 Task 4: That was sooooo good. I\'ve gotta walk around the mall to burn off these calories.';
+                    break;
+                case 5:
+                    status.innerText = '🎯 Task 5: I walked wayyyyy too much, gotta find Uncle Tetsu’s Cheesecake now.';
+                    break;
+                case 6:
+                    status.innerText = '🎯 Task 6: Wow that was soooo good. Hopefully I still have some energy for Hotpot Restaurant.';
+                    break;
+                case 7:
+                    status.innerText = '🎉 That was such a good birthday. 🎉';
+                    disableControls();
+                    playWinAudio(); // Play win audio
+                    stopBirthdayAudio(); // Stop birthday audio
+                    break;
+                case 999:
+                    status.innerText = '😞 Birthday failed, you ran out of time.';
+                    disableControls();
+                    stopBirthdayAudio();
+                    playLoseAudio();
+                    break;
+                default:
+                    status.innerText = '🎉 All tasks completed! 🎉';
+            }
+        }
+    }
+
+    // Handle movement
+    function move(direction) {
+        if(gameOver) return;
+
+        // Start timer and play sound on first move
+        if(!timerStarted) {
+            startTimer();
+            playBirthdaySound();
+            timerStarted = true;
+        }
+
+        let row = rows.indexOf(currentPosition.charAt(0));
+        let col = cols.indexOf(currentPosition.slice(1));
+
+        switch(direction) {
+            case 'up':
+                if(row > 0) row--;
+                break;
+            case 'down':
+                if(row < rows.length -1) row++;
+                break;
+            case 'left':
+                if(col > 0) col--;
+                break;
+            case 'right':
+                if(col < cols.length -1) col++;
+                break;
+        }
+
+        const newPosition = rows[row] + cols[col];
+        currentPosition = newPosition;
+        updateMap();
+        checkTask();
+    }
+
+    // Check if current position completes any task
+    function checkTask() {
+        if(gameOver) return;
+
+        let taskCompleted = false; // Flag to check if a task was completed
+
+        switch(currentTask) {
+            case 1:
+                // Task 1: Find David Buster’s
+                if(currentPosition === stores['David Buster’s']) {
+                    currentTask++;
+                    taskCompleted = true;
+                    updateStatus();
+                }
+                break;
+            case 2:
+                // Task 2: Find the Roof
+                if(currentPosition === stores['Roof']) {
+                    currentTask++;
+                    taskCompleted = true;
+                    updateStatus();
+                }
+                break;
+            case 3:
+                // Task 3: Find the Food Court
+                if(currentPosition === stores['Food Court']) {
+                    currentTask++;
+                    taskCompleted = true;
+                    updateStatus();
+                }
+                break;
+            case 4:
+                // Task 4: Mall Walk around (five cells)
+                if(currentTask === 4) {
+                    mallWalkSteps++;
+                    if(mallWalkSteps >= 50) {
+                        currentTask++;
+                        taskCompleted = true;
+                        updateStatus();
+                    } else {
+                        updateStatus(`🎯 Task 4: Walk around the mall. Steps taken: ${mallWalkSteps}/50.`);
+                    }
+                }
+                break;
+            case 5:
+                // Task 5: Find Uncle Tetsu’s Cheesecake
+                if(currentPosition === stores['Uncle Tetsu’s Cheesecake']) {
+                    currentTask++;
+                    taskCompleted = true;
+                    updateStatus();
+                }
+                break;
+            case 6:
+                // Task 6: Find Hotpot Restaurant
+                if(currentPosition === stores['Hotpot Restaurant']) {
+                    currentTask++;
+                    taskCompleted = true;
+                    updateStatus();
+                }
+                break;
+            default:
+                break;
+        }
+
+        if(taskCompleted) {
+            triggerTaskCompletionEffect(currentPosition);
+        }
+    }
+
+    // Show the directory modal
+    function showDirectory() {
+        if(gameOver) return;
+        
+        if(!timerStarted) {
+            startTimer();
+            playBirthdaySound();
+            timerStarted = true;
+        }
+
+        const directoryList = document.getElementById('directory-list');
+        directoryList.innerHTML = '';
+        for(let store in stores) {
+            const li = document.createElement('li');
+            li.innerText = `${store}: ${stores[store]}`;
+            directoryList.appendChild(li);
+        }
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('directory-modal').style.display = 'block';
+    }
+
+    // Close the directory modal
+    function closeDirectory() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('directory-modal').style.display = 'none';
+    }
+
+    // Disable movement controls
+    function disableControls() {
+        gameOver = true;
+        document.getElementById('up-btn').disabled = true;
+        document.getElementById('down-btn').disabled = true;
+        document.getElementById('left-btn').disabled = true;
+        document.getElementById('right-btn').disabled = true;
+        document.getElementById('directory-btn').disabled = true;
+    }
+
+    // Timer variables
+    let currentTime = 14 * 60; // in minutes (2 PM)
+    const timeElement = document.getElementById('time');
+    let timerInterval;
+
+    // Start the timer
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            if(currentTime < 19 * 60 && !gameOver) { // Up to 7 PM
+                currentTime += 1; // Increment by 1 minute
+                let hours = Math.floor(currentTime / 60);
+                let minutes = currentTime % 60;
+                let ampm = hours >= 12 ? 'PM' : 'AM';
+                let displayHour = hours % 12 === 0 ? 12 : hours % 12;
+                let displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+                timeElement.innerText = `🕑 Time: ${displayHour}:${displayMinutes} ${ampm}`;
+
+                if(currentTime >= 19 * 60) { // 7 PM
+                    currentTask = 999; // Special task for game over
+                    updateStatus();
+                    disableControls();
+                    clearInterval(timerInterval);
+                }
+            }
+        }, 200); // 1 second represents 1 minute
+    }
+
+    // Play birthday sound
+    function playBirthdaySound() {
+        birthdayAudio.play();
+    }
+
+    // Play completion sound and flash the tile
+    function triggerTaskCompletionEffect(cellId) {
+        // Play the completion sound
+        completeAudio.play();
+
+        // Get the cell element
+        const cell = document.getElementById(cellId);
+        if(cell) {
+            // Add the 'completed' class to permanently change the cell color
+            cell.classList.add('completed');
+
+            // Optional: Flash blue animation (if you want to keep it)
+            // cell.classList.add('flash-blue');
+            // setTimeout(() => {
+            //     cell.classList.remove('flash-blue');
+            // }, 500);
+        }
+    }
+        // Function to play win audio
+    function playWinAudio() {
+        winAudio.play();
+    }
+
+    function playLoseAudio() {
+        loseAudio.play();
+    }
+
+    // Function to stop birthday audio
+    function stopBirthdayAudio() {
+        birthdayAudio.pause();
+        birthdayAudio.currentTime = 0;
+    }
+
+    // Populate directory list initially (optional)
+    /*
+    window.onload = () => {
+        showDirectory();
+    };
+    */
+
+    // Optional: Allow clicking on cells to move Spencer
+    /*
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.addEventListener('click', () => {
+            const target = cell.id;
+            const targetRow = rows.indexOf(target.charAt(0));
+            const targetCol = cols.indexOf(target.slice(1));
+            const currentRow = rows.indexOf(currentPosition.charAt(0));
+            const currentCol = cols.indexOf(currentPosition.slice(1));
+
+            // Simple pathfinding: move horizontally then vertically
+            if(currentCol < targetCol) {
+                move('right');
+            } else if(currentCol > targetCol) {
+                move('left');
+            } else if(currentRow < targetRow) {
+                move('down');
+            } else if(currentRow > targetRow) {
+                move('up');
+            }
+        });
+    });
+    */
+</script>
+
+</body>
+</html>
