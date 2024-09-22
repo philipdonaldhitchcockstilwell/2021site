@@ -11,7 +11,7 @@
             font-family: 'Roboto', sans-serif;
             text-align: center;
             background-color: #ffe6f0;
-            background-image: url('https://i.imgur.com/8Iu0ZQj.png'); /* Example confetti image */
+            background-image: url('images/mall.png'); /* Mall background image */
             background-size: cover;
             background-repeat: no-repeat;
             position: relative;
@@ -23,6 +23,9 @@
             color: #ff4081;
             text-shadow: 2px 2px #ff80ab;
             margin-top: 20px;
+            background-color: pink;
+            border-radius: 10px; /* Added rounded corners */
+            padding: 10px; /* Added padding to make the rounded corners more visible */
         }
 
         #game-container {
@@ -31,7 +34,7 @@
             align-items: center;
             margin-top: 20px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.8);
+            /* background: rgba(255, 255, 255, 0); */
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
         }
@@ -41,6 +44,9 @@
             margin-bottom: 10px;
             color: #ff4081;
             font-weight: bold;
+            background-color: pink;
+            border-radius: 10px; /* Added rounded corners */
+            padding: 5px 10px; /* Added padding to make the rounded corners more visible */
         }
 
         #map {
@@ -140,11 +146,18 @@
         }
 
         #status {
-            margin-top: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
             font-weight: bold;
-            max-width: 600px;
+            max-width: 800px;
+            width: 90%;
             color: #333;
-            font-size: 1.1em;
+            font-size: 1.4em;
+            background-color: pink;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ff4081;
         }
 
         /* Directory Modal Styles */
@@ -268,11 +281,11 @@
     <button onclick="closeDirectory()">Close</button>
 </div>
 
-<!-- Audio Elements -->
-<audio id="birthday-audio" src="sound/birthdayspenc.mp3" preload="auto"></audio>
-<audio id="complete-audio" src="sound/complete.mp3" preload="auto"></audio> <!-- New Audio Element -->
-<audio id="win-audio" src="sound/win.mp3" preload="auto"></audio>
-<audio id="lose-audio" src="sound/lose.mp3" preload="auto"></audio> <!-- New Lose Audio Element -->
+    <!-- Audio Elements -->
+    <audio id="birthday-audio" src="sounds/birthdayspenc.mp3" preload="auto"></audio>
+<audio id="complete-audio" src="sounds/complete.mp3" preload="auto"></audio> <!-- New Audio Element -->
+<audio id="win-audio" src="sounds/win.mp3" preload="auto"></audio>
+<audio id="lose-audio" src="sounds/lose.mp3" preload="auto"></audio> <!-- New Lose Audio Element -->
 <script>
     // Define the mall map
     const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G']; // G row for Parking Lot
