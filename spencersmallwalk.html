@@ -116,16 +116,21 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 14px 28px; /* Increased padding for larger touch area */
             margin: 5px;
-            font-size: 16px;
+            font-size: 16px;     /* Larger font size for better readability */
             cursor: pointer;
             border: none;
-            border-radius: 10px;
+            border-radius: 10px;  /* Rounded corners for aesthetics */
             background-color: #ff4081;
             color: white;
             transition: background-color 0.3s, transform 0.2s;
             box-shadow: 0 4px #c51162;
+            user-select: none;
+            -webkit-user-select: none; /* Disable text selection on iOS */
+            -webkit-touch-callout: none; /* Disable touch callout on iOS */
+            touch-action: manipulation; /* Prevents zooming when pressing buttons */
+            outline: none; /* Remove outline on focus */
         }
 
         button:hover {
